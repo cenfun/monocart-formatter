@@ -12,43 +12,86 @@
 </head>
 
 <body>
-    <div>
-        <div>input:</div>
-        <textarea class="input" style="width: 800px;height: 300px;">console.log(1); var a=true;if(a){console.log(a)}</textarea>
-    </div>
-    <div><button class="format">format</button></div>
-   <div>
-        <div>output:</div>
-        <textarea class="output" style="width: 800px;height: 300px;"></textarea>
-   </div>
+    <table>
+        <tr>
+            <td>js</td>
+            <td>css</td>
+        </tr>
+        <tr>
+            <td><textarea class="input-js" style="width: 400px;height: 200px;">console.log(1); var a=true;if(a){console.log(a)}
+        
+var b = 2;
+
+const foo = () => {
+
+};
+
+const bar = ()=> {
+
+};
+                </textarea></td>
+            <td><textarea class="input-css" style="width: 400px;height: 200px;">.red {
+    color: red;
+}
+
+.unused,.and-used {
+    position: relative;
+}
+
+/* comments */
+.inline-unused{font-size:medium;}.inline-used {position:relative;}.next-unused{color:none}
+            </textarea></td>
+        </tr>
+        <tr>
+            <td colspan="2"><button class="format">format</button></td>
+        </tr>
+        <tr>
+            <td><textarea class="output-js" style="width: 400px;height: 350px;"></textarea></td>
+            <td><textarea class="output-css" style="width: 400px;height: 350px;"></textarea></td>
+        </tr>
+    </table>
     <script type="module">
         const { format, Mapping } = window['monocart-formatter'];
 
-        document.querySelector('.format').addEventListener('click', async () => {
+        const onFormat = (e) => {
 
-            const original = document.querySelector('.input').value;
+            const ls = ['js', 'css'];
 
-            const res = await format(original, 'js');
-            console.log(res);
+            ls.forEach(async (k) => {
+                const original = document.querySelector(`.input-${k}`).value;
 
-            if (res.error) {
-                console.error(res.error.message);
-                return;
-            }
+                const res = await format(original, k);
+                console.log(res);
 
-            document.querySelector('.output').value = res.content;
+                if (res.error) {
+                    console.error(res.error.message);
+                    return;
+                }
 
-            const mapping = new Mapping(res.content, res.mapping);
-
-            console.log('original slice: 41~47', original.slice(41, 47));
-        
-            const location = mapping.originalToFormatted(41);
-            console.log('originalToFormatted: 41 =>', location);
-
-            console.log('getFormattedSlice:', mapping.getFormattedSlice(location.offset + location.column, location.offset + location.column + 6));
+                document.querySelector(`.output-${k}`).value = res.content;
         
 
-        });
+                const mapping = new Mapping(res.content, res.mapping);
+
+                console.log('original slice: 41~47', original.slice(41, 47));
+
+                const location = mapping.originalToFormatted(41);
+                console.log('originalToFormatted: 41 =>', location);
+
+                console.log('getFormattedSlice:', mapping.getFormattedSlice(location.offset + location.column, location.offset + location.column + 6));
+
+                console.log(mapping.formattedLineEndings);
+
+                mapping.formattedLineEndings.forEach((le, i) => {
+                    console.log('isEmptyLine', mapping.isEmptyLine(i), mapping.getFormattedLine(i));
+                });
+
+
+            });
+
+        };
+
+        document.querySelector('.format').addEventListener('click', onFormat);
 
     </script>
 </body>

@@ -51,6 +51,41 @@ export default class Mapping {
         return this.formattedContent.slice(s, e);
     }
 
+    getFormattedLine(line) {
+        const lineEndings = this.formattedLineEndings;
+
+        const lastLine = lineEndings.length - 1;
+        if (line > lastLine) {
+            return {
+                line,
+                start: 0,
+                end: 0,
+                text: ''
+            };
+        }
+
+        let sPos = 0;
+        if (line) {
+            sPos = lineEndings[line - 1] + 1;
+        }
+        const ePos = lineEndings[line];
+        const text = this.getFormattedSlice(sPos, ePos);
+
+        return {
+            line,
+            start: sPos,
+            end: ePos,
+            text
+        };
+    }
+
+    isEmptyLine(line) {
+        const info = this.getFormattedLine(line);
+        const reg = /\S/;
+        const hasCode = reg.test(info.text);
+        return !hasCode;
+    }
+
     originalToFormatted(originalPosition) {
         const formattedPosition = this.convertPosition(this.mapping.original, this.mapping.formatted, originalPosition);
         return this.positionToLocation(formattedPosition);
@@ -73,9 +108,9 @@ export default class Mapping {
 
         // line index (from 0)
         const line = upperBound(lineEndings, position - 1, DEFAULT_COMPARATOR);
+        const lastLine = lineEndings.length - 1;
 
-        if (line >= lineEndings.length) {
-            const lastLine = lineEndings.length - 1;
+        if (line > lastLine) {
             return {
                 line: lastLine,
                 column: 0,

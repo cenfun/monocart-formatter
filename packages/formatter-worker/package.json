@@ -1,0 +1,14 @@
+{
+    "name": "monocart-formatter-worker",
+    "version": "1.0.1",
+    "private": true,
+    "main": "dist/monocart-formatter-worker.js",
+    "module": "dist/monocart-formatter-worker.js",
+    "files": [
+        "dist"
+    ],
+    "license": "MIT",
+    "dependencies": {},
+    "devDependencies": {},
+    "platform": "node"
+}

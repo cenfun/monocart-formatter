@@ -1,2 +1,3 @@
 # monocart-formatter
-monocart-formatter
+
+[monocart-formatter](/packages/formatter/)

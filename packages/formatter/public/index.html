@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+    <link rel="icon" href="data:,">
+    <title>monocart-formatter</title>
+    <!--inject:start-->
+    <script src="../dist/monocart-formatter.js"></script>
+    <!--inject:end-->
+</head>
+
+<body>
+    <div>
+        <div>input:</div>
+        <textarea class="input" style="width: 800px;height: 300px;">console.log(1); var a=true;if(a){console.log(a)}</textarea>
+    </div>
+    <div><button class="format">format</button></div>
+   <div>
+        <div>output:</div>
+        <textarea class="output" style="width: 800px;height: 300px;"></textarea>
+   </div>
+    <script type="module">
+        const { format, Mapping } = window['monocart-formatter'];
+
+        document.querySelector('.format').addEventListener('click', async () => {
+
+            const original = document.querySelector('.input').value;
+
+            const res = await format(original, 'js');
+            console.log(res);
+
+            if (res.error) {
+                console.error(res.error.message);
+                return;
+            }
+
+            document.querySelector('.output').value = res.content;
+
+            const mapping = new Mapping(res.content, res.mapping);
+
+            console.log('original slice: 41~47', original.slice(41, 47));
+        
+            const location = mapping.originalToFormatted(41);
+            console.log('originalToFormatted: 41 =>', location);
+
+            console.log('getFormattedSlice:', mapping.getFormattedSlice(location.offset + location.column, location.offset + location.column + 6));
+        
+
+        });
+
+    </script>
+</body>
+
+</html>

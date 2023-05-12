@@ -1,41 +1,65 @@
-const findIndexesOfSubString = (inputString, searchString) => {
-    const matches = [];
-    let i = inputString.indexOf(searchString);
-    while (i !== -1) {
-        matches.push(i);
-        i = inputString.indexOf(searchString, i + searchString.length);
+
+const findLine = function(list, position) {
+    let start = 0;
+    let end = list.length - 1;
+    while (end - start > 1) {
+        const i = Math.floor((start + end) * 0.5);
+        const item = list[i];
+        if (position < item.start) {
+            end = i;
+            continue;
+        }
+        if (position > item.end) {
+            start = i;
+            continue;
+        }
+        return list[i];
     }
-    return matches;
+    // last two items, less is start
+    const endItem = list[end];
+    if (position < endItem.start) {
+        return list[start];
+    }
+    return list[end];
 };
 
-const findLineEndingIndexes = (inputString) => {
-    const endings = findIndexesOfSubString(inputString, '\n');
-    endings.push(inputString.length);
-    return endings;
+const findIndex = function(list, position) {
+    let start = 0;
+    let end = list.length - 1;
+    while (end - start > 1) {
+        const i = Math.floor((start + end) * 0.5);
+        const item = list[i];
+        if (position < item) {
+            end = i;
+            continue;
+        }
+        if (position > item) {
+            start = i;
+            continue;
+        }
+        // equal item
+        return i;
+    }
+    // last two items, less is start
+    const endItem = list[end];
+    if (position < endItem) {
+        return start;
+    }
+    return end;
 };
 
-const DEFAULT_COMPARATOR = (a, b) => {
-    if (a < b) {
-        return -1;
-    }
-    if (a > b) {
-        return 1;
-    }
-    return 0;
-};
-
-const upperBound = (array, needle, comparator) => {
-    let l = 0;
-    let r = array.length;
-    while (l < r) {
-        const m = (l + r) >> 1;
-        if (comparator(needle, array[m]) >= 0) {
-            l = m + 1;
-        } else {
-            r = m;
+const getFormattedPosition = function(mapping, originalPosition) {
+    const { original, formatted } = mapping;
+    const index = findIndex(original, originalPosition);
+    const offset = originalPosition - original[index];
+    const newIndex = formatted[index] + offset;
+    if (index < formatted.length - 1) {
+        const nextIndex = formatted[index + 1];
+        if (newIndex > nextIndex) {
+            return nextIndex;
         }
     }
-    return r;
+    return newIndex;
 };
 
 
@@ -43,8 +67,32 @@ export default class Mapping {
 
     constructor(formattedContent, mapping) {
         this.formattedContent = formattedContent;
-        this.formattedLineEndings = findLineEndingIndexes(formattedContent);
         this.mapping = mapping;
+
+        let pos = 0;
+        this.formattedLines = formattedContent.split(/\n/).map((text, line) => {
+            const length = text.length;
+            const start = pos;
+            const end = start + text.length;
+
+            pos += length + 1;
+
+            return {
+                line,
+                start,
+                end,
+                length,
+                text
+            };
+        });
+
+        // console.log(this.formattedLines);
+        // this.formattedLines.forEach((item) => {
+        //     const slice = formattedContent.slice(item.start, item.end);
+        //     if (slice !== item.text) {
+        //         console.error(JSON.stringify(item.text), JSON.stringify(slice));
+        //     }
+        // });
     }
 
     getFormattedSlice(s, e) {
@@ -52,92 +100,35 @@ export default class Mapping {
     }
 
     getFormattedLine(line) {
-        const lineEndings = this.formattedLineEndings;
-
-        const lastLine = lineEndings.length - 1;
-        if (line > lastLine) {
-            return {
-                line,
-                start: 0,
-                end: 0,
-                text: ''
-            };
-        }
-
-        let sPos = 0;
-        if (line) {
-            sPos = lineEndings[line - 1] + 1;
-        }
-        const ePos = lineEndings[line];
-        const text = this.getFormattedSlice(sPos, ePos);
-
-        return {
-            line,
-            start: sPos,
-            end: ePos,
-            text
-        };
+        return this.formattedLines[line];
     }
 
-    isEmptyLine(line) {
+    isFormattedLineEmpty(line) {
         const info = this.getFormattedLine(line);
+        if (!info) {
+            return true;
+        }
+        if (!info.length) {
+            return true;
+        }
         const reg = /\S/;
         const hasCode = reg.test(info.text);
         return !hasCode;
     }
 
-    originalToFormatted(originalPosition) {
-        const formattedPosition = this.convertPosition(this.mapping.original, this.mapping.formatted, originalPosition);
-        return this.positionToLocation(formattedPosition);
-    }
+    getFormattedLocation(originalPosition) {
 
-    // =====================================================================================
-    // private
-    convertPosition(positions1, positions2, position) {
-        const index = upperBound(positions1, position, DEFAULT_COMPARATOR) - 1;
-        let convertedPosition = positions2[index] + position - positions1[index];
-        if (index < positions2.length - 1 && convertedPosition > positions2[index + 1]) {
-            convertedPosition = positions2[index + 1];
-        }
-        return convertedPosition;
-    }
+        const formattedPosition = getFormattedPosition(this.mapping, originalPosition);
 
-    positionToLocation(position) {
+        const formattedLine = findLine(this.formattedLines, formattedPosition);
+        // console.log(formattedLine);
 
-        const lineEndings = this.formattedLineEndings;
-
-        // line index (from 0)
-        const line = upperBound(lineEndings, position - 1, DEFAULT_COMPARATOR);
-        const lastLine = lineEndings.length - 1;
-
-        if (line > lastLine) {
-            return {
-                line: lastLine,
-                column: 0,
-                last: 0,
-                offset: lineEndings[lastLine]
-            };
-        }
-
-        const endPos = lineEndings[line];
-
-        let offset;
-        let column;
-        if (line) {
-            offset = lineEndings[line - 1] + 1;
-            column = position - offset;
-        } else {
-            offset = 0;
-            column = position;
-        }
-
-        const last = endPos - offset;
+        const column = formattedPosition - formattedLine.start;
 
         return {
-            line,
             column,
-            last,
-            offset
+            ... formattedLine
         };
     }
+
 }

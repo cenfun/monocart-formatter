@@ -7,6 +7,11 @@
     <link rel="icon" href="data:,">
     <title>monocart-formatter</title>
     <style>
+        .header {
+            padding-bottom: 10px;
+            text-align: center;
+        }
+
         table {
             width: 100%;
         }
@@ -27,6 +32,12 @@
 </head>
 
 <body>
+    <div class="header">
+        <label>
+            <input type="checkbox" class="cb-check-mapping" checked />
+            check mapping
+        </label>
+    </div>
     <table>
         <tr>
             <td><textarea class="input-js">console.log(1); var a=true;if(a){console.log(a)}
@@ -95,12 +106,13 @@ const bar = ()=> {
             const emptyReg = /\s/;
             const mapping = new Mapping(formatted, res.mapping);
             for (let i = 0, l = original.length; i < l; i++) {
-                const loc = mapping.originalToFormatted(i);
+                const loc = mapping.getFormattedLocation(i);
                 const s1 = original[i];
                 if (emptyReg.test(s1)) {
                     continue;
                 }
-                const s2 = formatted[loc.offset + loc.column];
+                // console.log(loc);
+                const s2 = formatted[loc.start + loc.column];
                 if (s1 !== s2) {
                     console.error(i, loc.line, JSON.stringify(s1), JSON.stringify(s2));
                 }
@@ -148,7 +160,9 @@ const bar = ()=> {
 
                 document.querySelector(`.output-${k}`).value = res.content;
 
-                checkMapping(res, original);
+                if (document.querySelector('.cb-check-mapping').checked) {
+                    checkMapping(res, original);
+                }
 
             });
 

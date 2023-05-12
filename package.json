@@ -5,6 +5,7 @@
     "private": true,
     "main": "",
     "scripts": {
+        "dev": "sf d formatter",
         "build-worker": "sf b worker -p",
         "build-formatter": "sf b formatter -p",
         "build": "sf lint && npm run build-worker && npm run build-formatter",

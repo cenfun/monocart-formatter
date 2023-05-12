@@ -6,6 +6,10 @@
         "dist"
     ],
     "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/cenfun/monocart-formatter.git"
+    },
     "dependencies": {},
     "devDependencies": {}
 }

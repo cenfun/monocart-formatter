@@ -1,3 +1,3 @@
 # monocart-beautify-worker
 
-## Getting Started
+beautify-worker for [formatter](/packages/formatter)

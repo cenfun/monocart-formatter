@@ -100,19 +100,24 @@ export default class Mapping {
     }
 
     getFormattedLine(line) {
-        return this.formattedLines[line];
+        const lineInfo = this.formattedLines[line];
+        if (lineInfo) {
+            return {
+                ... lineInfo
+            };
+        }
     }
 
     isFormattedLineEmpty(line) {
-        const info = this.getFormattedLine(line);
-        if (!info) {
+        const lineInfo = this.getFormattedLine(line);
+        if (!lineInfo) {
             return true;
         }
-        if (!info.length) {
+        if (!lineInfo.length) {
             return true;
         }
         const reg = /\S/;
-        const hasCode = reg.test(info.text);
+        const hasCode = reg.test(lineInfo.text);
         return !hasCode;
     }
 

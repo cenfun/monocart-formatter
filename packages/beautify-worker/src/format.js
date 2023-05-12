@@ -1,6 +1,7 @@
 import beautify from 'js-beautify';
 
 
+// eslint-disable-next-line complexity
 const getMapping = (oText, fText) => {
 
     const oList = [0];
@@ -16,7 +17,6 @@ const getMapping = (oText, fText) => {
         };
     }
 
-
     // high performance
     // str.search(reg) -> index
     // reg.test(str) -> boolean
@@ -24,11 +24,12 @@ const getMapping = (oText, fText) => {
     const emptyReg = /\s/;
 
     let record = false;
+    let oIndex = 0;
+    let fIndex = 0;
 
-    const nextPos = (oIndex, fIndex) => {
+    while (oIndex < oLength && fIndex < fLength) {
         const oS = oText[oIndex];
         const fS = fText[fIndex];
-
         if (oS === fS) {
 
             if (record && oIndex !== fIndex) {
@@ -40,12 +41,7 @@ const getMapping = (oText, fText) => {
 
             oIndex += 1;
             fIndex += 1;
-            if (oIndex < oLength && fIndex < fLength) {
-                nextPos(oIndex, fIndex);
-                return;
-            }
-            // console.log('index out of length');
-            return;
+            continue;
         }
 
         // console.log(oIndex, JSON.stringify(oS), fIndex, JSON.stringify(fS));
@@ -60,10 +56,8 @@ const getMapping = (oText, fText) => {
 
         record = true;
 
-        nextPos(oIndex, fIndex);
-    };
+    }
 
-    nextPos(0, 0);
 
     return {
         original: oList,

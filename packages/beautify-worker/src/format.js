@@ -78,6 +78,19 @@ const format = (text, type, options = {}) => {
 
     const formatter = beautify[type] || beautify;
 
+    // https://github.com/beautify-web/js-beautify
+    options = {
+        'indent_size': 4,
+        'indent_char': ' ',
+        'indent_with_tabs': false,
+        'indent_level': 0,
+
+        'eol': '\n',
+        'end_with_newline': false,
+
+        ... options
+    };
+
     const formattedText = formatter(text, options);
 
     const mapping = getMapping(text, formattedText);

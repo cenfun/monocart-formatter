@@ -1,6 +1,6 @@
 {
     "name": "monocart-beautify-worker",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "main": "dist/monocart-beautify-worker.js",
     "files": [
         "dist"

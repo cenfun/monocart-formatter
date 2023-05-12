@@ -128,7 +128,7 @@ export default class Mapping {
         const formattedLine = findLine(this.formattedLines, formattedPosition);
         // console.log(formattedLine);
 
-        const column = formattedPosition - formattedLine.start;
+        const column = Math.min(Math.max(formattedPosition - formattedLine.start, 0), formattedLine.length);
 
         return {
             column,

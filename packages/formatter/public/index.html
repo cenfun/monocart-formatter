@@ -90,6 +90,24 @@ const bar = ()=> {
     <script>
         const { format, Mapping } = window['monocart-formatter'];
 
+        const checkMapping = (res, original) => {
+            const formatted = res.content;
+            const emptyReg = /\s/;
+            const mapping = new Mapping(formatted, res.mapping);
+            for (let i = 0, l = original.length; i < l; i++) {
+                const loc = mapping.originalToFormatted(i);
+                const s1 = original[i];
+                if (emptyReg.test(s1)) {
+                    continue;
+                }
+                const s2 = formatted[loc.offset + loc.column];
+                if (s1 !== s2) {
+                    console.error(i, loc.line, JSON.stringify(s1), JSON.stringify(s2));
+                }
+            }
+
+        };
+
         document.querySelector('.input-html').value = `
         <!DOCTYPE html>
             <html>
@@ -129,6 +147,9 @@ const bar = ()=> {
                 }
 
                 document.querySelector(`.output-${k}`).value = res.content;
+
+                checkMapping(res, original);
+
             });
 
         });

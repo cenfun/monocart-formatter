@@ -8,28 +8,7 @@ module.exports = {
 
     build: {
 
-        vendors: ['formatter', 'beautify-worker'],
-
-        // webpackConfig: (conf, Util) => {
-        //     // console.log(conf.externals);
-        //     conf.externals.push('fs');
-        //     conf.externals.push('path');
-        // },
-
-        beforeAll: (jobList, Util) => {
-            console.log('add dcheck.js before build all');
-
-            // const dccheckPath = path.resolve('node_modules/chrome-devtools-frontend/front_end/core/platform/dcheck.js');
-
-            const dccheckPath = path.resolve(__dirname, '../../github/devtools-frontend/front_end/core/platform/dcheck.js');
-
-            const functionImplementation = '';
-            const dccheckContent = `export function DCHECK(condition, message = 'DCHECK') {${functionImplementation}}`;
-            fs.writeFileSync(dccheckPath, dccheckContent);
-
-            return 0;
-        },
-
+        vendors: ['formatter'],
 
         before: (item, Util) => {
             console.log('before build');
@@ -40,7 +19,7 @@ module.exports = {
 
             if (item.name === 'formatter') {
 
-                const list = ['formatter-worker', 'beautify-worker'];
+                const list = ['beautify-worker'];
 
                 for (const worker of list) {
                     console.log(`generating ${worker}.js ...`);

@@ -11,7 +11,7 @@ const formatterDataUrl = () => {
 };
 
 let workerUrl;
-const formatInWorker = (text, type) => {
+const formatInWorker = (text, type, options) => {
     if (!workerUrl) {
         workerUrl = new URL(formatterDataUrl());
     }
@@ -23,8 +23,9 @@ const formatInWorker = (text, type) => {
         worker.onmessage = (e) => {
             if (e.data === 'workerReady') {
                 worker.postMessage({
+                    text,
                     type,
-                    text
+                    options
                 });
                 return;
             }
@@ -43,20 +44,16 @@ const formatInWorker = (text, type) => {
 };
 
 
-const format = async (text, type = 'js') => {
+const format = async (text, type, options) => {
 
     if (typeof text !== 'string') {
-        return {
-            error: new Error('The text must be a string')
-        };
+        text = String(text);
     }
 
-    const res = await formatInWorker(text, type);
+    const res = await formatInWorker(text, type, options);
 
     return res;
 };
 
-
-export default format;
-
 export { format, Mapping };
+export default format;

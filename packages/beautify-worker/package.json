@@ -1,0 +1,11 @@
+{
+    "name": "monocart-beautify-worker",
+    "version": "",
+    "main": "dist/monocart-beautify-worker.js",
+    "files": [
+        "dist"
+    ],
+    "private": true,
+    "dependencies": {},
+    "devDependencies": {}
+}

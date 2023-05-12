@@ -8,7 +8,13 @@ module.exports = {
 
     build: {
 
-        vendors: ['formatter', 'code-viewer'],
+        vendors: ['formatter', 'beautify-worker'],
+
+        // webpackConfig: (conf, Util) => {
+        //     // console.log(conf.externals);
+        //     conf.externals.push('fs');
+        //     conf.externals.push('path');
+        // },
 
         beforeAll: (jobList, Util) => {
             console.log('add dcheck.js before build all');

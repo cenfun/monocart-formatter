@@ -5,7 +5,9 @@
     "private": true,
     "main": "",
     "scripts": {
-        "build": "sf lint && sf b -p",
+        "build-worker": "sf b worker -p",
+        "build-formatter": "sf b formatter -p",
+        "build": "sf lint && npm run build-worker && npm run build-formatter",
         "patch": "npm run build && sf publish patch"
     },
     "workspaces": [

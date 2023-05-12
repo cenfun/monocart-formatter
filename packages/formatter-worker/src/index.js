@@ -1,4 +1,6 @@
-import { FormatterWorker } from 'chrome-devtools-frontend/front_end/entrypoints/formatter_worker/formatter_worker';
+// import { FormatterWorker } from 'chrome-devtools-frontend/front_end/entrypoints/formatter_worker/formatter_worker';
+
+import { FormatterWorker } from '../../../../github/devtools-frontend/front_end/entrypoints/formatter_worker/formatter_worker';
 
 onmessage = function(e) {
     const { type, text } = e.data;

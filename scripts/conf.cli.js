@@ -13,7 +13,10 @@ module.exports = {
         beforeAll: (jobList, Util) => {
             console.log('add dcheck.js before build all');
 
-            const dccheckPath = path.resolve('node_modules/chrome-devtools-frontend/front_end/core/platform/dcheck.js');
+            // const dccheckPath = path.resolve('node_modules/chrome-devtools-frontend/front_end/core/platform/dcheck.js');
+
+            const dccheckPath = path.resolve(__dirname, '../../github/devtools-frontend/front_end/core/platform/dcheck.js');
+
             const functionImplementation = '';
             const dccheckContent = `export function DCHECK(condition, message = 'DCHECK') {${functionImplementation}}`;
             fs.writeFileSync(dccheckPath, dccheckContent);
@@ -38,7 +41,7 @@ module.exports = {
                 }
                 const buf = fs.readFileSync(workerPath);
                 const { deflateSync } = require('lz-utils');
-                const workerData = `export default "${deflateSync(buf)}";`;
+                const workerData = `export default '${deflateSync(buf)}';`;
                 Util.writeFileSync(path.resolve('.temp/formatter-worker.js'), workerData);
             }
 

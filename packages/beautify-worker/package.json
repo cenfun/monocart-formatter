@@ -7,5 +7,6 @@
     ],
     "private": true,
     "dependencies": {},
-    "devDependencies": {}
+    "devDependencies": {},
+    "platform": "node"
 }

@@ -39,16 +39,22 @@ module.exports = {
             }
 
             if (item.name === 'formatter') {
-                console.log('generating formatter-worker.js ...');
-                const workerPath = path.resolve(item.buildPath, '../../formatter-worker/dist/monocart-formatter-worker.js');
-                if (!fs.existsSync(workerPath)) {
-                    Util.logRed(`please build formatter-worker first, not found build ${workerPath}`);
-                    return 0;
+
+                const list = ['formatter-worker', 'beautify-worker'];
+
+                for (const worker of list) {
+                    console.log(`generating ${worker}.js ...`);
+                    const workerPath = path.resolve(__dirname, `../packages/${worker}/dist/monocart-${worker}.js`);
+                    if (!fs.existsSync(workerPath)) {
+                        Util.logRed(`please build ${worker} first, not found build ${workerPath}`);
+                        return 0;
+                    }
+                    const buf = fs.readFileSync(workerPath);
+                    const { deflateSync } = require('lz-utils');
+                    const workerData = `export default '${deflateSync(buf)}';`;
+                    Util.writeFileSync(path.resolve(`.temp/${worker}.js`), workerData);
                 }
-                const buf = fs.readFileSync(workerPath);
-                const { deflateSync } = require('lz-utils');
-                const workerData = `export default '${deflateSync(buf)}';`;
-                Util.writeFileSync(path.resolve('.temp/formatter-worker.js'), workerData);
+
             }
 
             return 0;

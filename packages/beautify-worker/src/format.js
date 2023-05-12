@@ -1,6 +1,5 @@
 import beautify from 'js-beautify';
 
-
 // eslint-disable-next-line complexity
 const getMapping = (oText, fText) => {
 

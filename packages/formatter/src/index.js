@@ -1,4 +1,4 @@
-import dataStr from '../../../.temp/formatter-worker.js';
+import dataStr from '../../../.temp/beautify-worker.js';
 import inflateSync from 'lz-utils/inflate-sync';
 import Mapping from './mapping.js';
 

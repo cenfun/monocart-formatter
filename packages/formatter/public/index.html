@@ -6,6 +6,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
     <link rel="icon" href="data:,">
     <title>monocart-formatter</title>
+    <style>
+        table {
+            width: 100%;
+        }
+
+        table td {
+            text-align: center;
+        }
+
+        textarea {
+            width: 500px;
+            height: 160px;
+        }
+
+    </style>
     <!--inject:start-->
     <script src="../dist/monocart-formatter.js"></script>
     <!--inject:end-->
@@ -14,11 +29,7 @@
 <body>
     <table>
         <tr>
-            <td>js</td>
-            <td>css</td>
-        </tr>
-        <tr>
-            <td><textarea class="input-js" style="width: 400px;height: 200px;">console.log(1); var a=true;if(a){console.log(a)}
+            <td><textarea class="input-js">console.log(1); var a=true;if(a){console.log(a)}
         
 var b = 2;
 
@@ -30,7 +41,14 @@ const bar = ()=> {
 
 };
                 </textarea></td>
-            <td><textarea class="input-css" style="width: 400px;height: 200px;">.red {
+                <td>
+                    <button class="format-js">format-js</button>
+                    <div class="duration-js"></div>
+                </td>
+                <td><textarea class="output-js"></textarea></td>
+        </tr>
+        <tr>
+            <td><textarea class="input-css">.red {
     color: red;
 }
 
@@ -41,27 +59,69 @@ const bar = ()=> {
 /* comments */
 .inline-unused{font-size:medium;}.inline-used {position:relative;}.next-unused{color:none}
             </textarea></td>
+            <td>
+                <button class="format-css">format-css</button>
+                <div class="duration-css"></div>
+            </td>
+            <td><textarea class="output-css"></textarea></td>
         </tr>
         <tr>
-            <td colspan="2"><button class="format">format</button></td>
+            <td><textarea class="input-html"></textarea></td>
+            <td>
+                <button class="format-html">format-html</button>
+                <div class="duration-html"></div>
+            </td>
+            <td><textarea class="output-html"></textarea></td>
         </tr>
         <tr>
-            <td><textarea class="output-js" style="width: 400px;height: 350px;"></textarea></td>
-            <td><textarea class="output-css" style="width: 400px;height: 350px;"></textarea></td>
+            <td><textarea class="input-json">{"a":"1",
+                "build-worker": "sf b worker -p","build-formatter": "sf b formatter -p",
+                 "build": "sf lint && npm run build-worker && npm run build-formatter",
+                "patch": "npm run build && sf publish patch"
+            }
+            </textarea></td>
+            <td>
+                <button class="format-json">format-json</button>
+                <div class="duration-json"></div>
+            </td>
+            <td><textarea class="output-json"></textarea></td>
         </tr>
     </table>
-    <script type="module">
+    <script>
         const { format, Mapping } = window['monocart-formatter'];
 
-        const onFormat = (e) => {
+        document.querySelector('.input-html').value = `
+        <!DOCTYPE html>
+            <html>
+                <head>
+                    <meta charset="utf-8">
+                    <title>title</title>
+                    <style>
+                        table { width: 100%;}
+                        table td { text-align: center; }
+                    </style>
+                </head>
+                <body>
+                    <div><div>
+                    <span>
+                </body>
+            </html>
+        `;
 
-            const ls = ['js', 'css'];
+        const ls = ['js', 'css', 'html', 'json'];
 
-            ls.forEach(async (k) => {
+        ls.forEach((k) => {
+
+            document.querySelector(`.format-${k}`).addEventListener('click', async () => {
+        
+                const time_start = Date.now();
                 const original = document.querySelector(`.input-${k}`).value;
 
                 const res = await format(original, k);
                 console.log(res);
+
+                const duration = Date.now() - time_start;
+                document.querySelector(`.duration-${k}`).innerHTML = duration.toLocaleString();
 
                 if (res.error) {
                     console.error(res.error.message);
@@ -69,29 +129,9 @@ const bar = ()=> {
                 }
 
                 document.querySelector(`.output-${k}`).value = res.content;
-        
-
-                const mapping = new Mapping(res.content, res.mapping);
-
-                console.log('original slice: 41~47', original.slice(41, 47));
-
-                const location = mapping.originalToFormatted(41);
-                console.log('originalToFormatted: 41 =>', location);
-
-                console.log('getFormattedSlice:', mapping.getFormattedSlice(location.offset + location.column, location.offset + location.column + 6));
-
-                console.log(mapping.formattedLineEndings);
-
-                mapping.formattedLineEndings.forEach((le, i) => {
-                    console.log('isEmptyLine', mapping.isEmptyLine(i), mapping.getFormattedLine(i));
-                });
-
-
             });
 
-        };
-
-        document.querySelector('.format').addEventListener('click', onFormat);
+        });
 
     </script>
 </body>

@@ -73,7 +73,7 @@ export default class Mapping {
         this.formattedLines = formattedContent.split(/\n/).map((text, line) => {
             const length = text.length;
             const start = pos;
-            const end = start + text.length;
+            const end = start + length;
 
             pos += length + 1;
 

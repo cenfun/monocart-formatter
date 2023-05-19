@@ -89,13 +89,6 @@ export default class Mapping {
             };
         });
 
-        // console.log(this.formattedLines);
-        // this.formattedLines.forEach((item) => {
-        //     const slice = formattedContent.slice(item.start, item.end);
-        //     if (slice !== item.text) {
-        //         console.error(JSON.stringify(item.text), JSON.stringify(slice));
-        //     }
-        // });
     }
 
     getFormattedSlice(s, e) {
@@ -124,17 +117,28 @@ export default class Mapping {
         return !hasCode;
     }
 
-    getFormattedLocation(originalPosition) {
+    getFormattedLocation(originalPosition, skipIndent) {
 
         const formattedPosition = getFormattedPosition(this.mapping, originalPosition);
 
         const formattedLine = findLine(this.formattedLines, formattedPosition);
         // console.log(formattedLine);
 
-        const column = Math.min(Math.max(formattedPosition - formattedLine.start, 0), formattedLine.length);
+        let indent = 0;
+        if (skipIndent) {
+            indent = formattedLine.text.search(/\S/);
+            if (indent === -1) {
+                indent = formattedLine.length;
+            }
+            // console.log('indent', indent, [formattedLine.text]);
+        }
+
+        let column = Math.max(formattedPosition - formattedLine.start, indent);
+        column = Math.min(column, formattedLine.length);
 
         return {
             column,
+            indent,
             ... formattedLine
         };
     }

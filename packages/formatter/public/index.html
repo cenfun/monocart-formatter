@@ -189,18 +189,38 @@ const bar = ()=> {
             ['aaa ', 'a a a'],
             ['aaab', 'a a a'],
             ['aaa', 'a a ab'],
-            ['  saaa dd', '   a a a']
+            // error case
+            ['  error case', '   a a a']
         ];
 
         list.forEach((arr) => {
             const generatedMapping = Mapping.generate(arr[0], arr[1]);
             console.log(arr, generatedMapping);
             if (generatedMapping.error) {
-                console.error(generatedMapping.error);
+                console.error(arr, generatedMapping.error);
             } else {
                 checkMapping(arr[0], arr[1], generatedMapping);
             }
         });
+
+        const original = 'aaa\n\tbbb\t ccc';
+        const formatted = 'aaa\n    bbb\n    \nccc';
+        const generatedMapping = Mapping.generate(original, formatted);
+        const mapping = new Mapping(formatted, generatedMapping);
+        console.log([original, formatted], generatedMapping);
+        const loc1 = mapping.getFormattedLocation(4);
+        const s1 = formatted[loc1.start + loc1.column];
+        console.assert(s1 === ' ');
+
+        const loc2 = mapping.getFormattedLocation(4, true);
+        const s2 = formatted[loc2.start + loc2.column];
+        console.assert(s2 === 'b');
+
+        const loc3 = mapping.getFormattedLocation(9, true);
+        console.log(loc3, original[9]);
+        const s3 = formatted[loc3.start + loc3.column];
+        console.log([s3]);
+        console.assert(loc3.indent === 4);
 
     </script>
 </body>

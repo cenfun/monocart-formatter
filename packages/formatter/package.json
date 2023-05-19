@@ -1,6 +1,6 @@
 {
     "name": "monocart-formatter",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "main": "dist/monocart-formatter.js",
     "files": [
         "dist"

@@ -40,11 +40,11 @@
     </div>
     <table>
         <tr>
-            <td><textarea class="input-js">console.log(1); var a=true;if(a){console.log(a)}
+            <td><textarea class="input-js">console.log(1);var   a= true;if(a){console.log(a)}
         
-var b = 2;
-
-const foo = () => {
+var b = 2;  
+    
+const foo = ()   => {
 
 };
 
@@ -101,20 +101,23 @@ const bar = ()=> {
     <script>
         const { format, Mapping } = window['monocart-formatter'];
 
-        const checkMapping = (res, original) => {
-            const formatted = res.content;
+        const checkMapping = (original, formatted, formattedMapping) => {
             const emptyReg = /\s/;
-            const mapping = new Mapping(formatted, res.mapping);
+            const mapping = new Mapping(formatted, formattedMapping);
             for (let i = 0, l = original.length; i < l; i++) {
-                const loc = mapping.getFormattedLocation(i);
                 const s1 = original[i];
                 if (emptyReg.test(s1)) {
                     continue;
                 }
-                // console.log(loc);
-                const s2 = formatted[loc.start + loc.column];
+                const loc = mapping.getFormattedLocation(i);
+                const j = loc.start + loc.column;
+                // out of text, original has more non-null characters
+                if (j >= formatted.length) {
+                    continue;
+                }
+                const s2 = formatted[j];
                 if (s1 !== s2) {
-                    console.error(i, loc.line, JSON.stringify(s1), JSON.stringify(s2));
+                    console.error([i, j], [s1, s2], loc);
                 }
             }
 
@@ -148,7 +151,9 @@ const bar = ()=> {
                 const original = document.querySelector(`.input-${k}`).value;
 
                 const res = await format(original, k);
-                console.log(res);
+                // console.log(res);
+
+                // console.log([original, res.content]);
 
                 const duration = Date.now() - time_start;
                 document.querySelector(`.duration-${k}`).innerHTML = duration.toLocaleString();
@@ -161,11 +166,40 @@ const bar = ()=> {
                 document.querySelector(`.output-${k}`).value = res.content;
 
                 if (document.querySelector('.cb-check-mapping').checked) {
-                    checkMapping(res, original);
+
+                    const formatted = res.content;
+                    // const formattedMapping = res.mapping;
+                    // test generate api locally
+                    const generatedMapping = Mapping.generate(original, formatted);
+
+                    console.log(k, generatedMapping);
+
+                    checkMapping(original, formatted, generatedMapping);
                 }
 
             });
 
+        });
+
+        const list = [
+            ['aaa', 'aaa'],
+            ['a  a  a', 'a\na\na'],
+            ['var  a=1;var b;', 'var a = 1;\nvar b;'],
+            ['aaa', 'a a a '],
+            ['aaa ', 'a a a'],
+            ['aaab', 'a a a'],
+            ['aaa', 'a a ab'],
+            ['  saaa dd', '   a a a']
+        ];
+
+        list.forEach((arr) => {
+            const generatedMapping = Mapping.generate(arr[0], arr[1]);
+            console.log(arr, generatedMapping);
+            if (generatedMapping.error) {
+                console.error(generatedMapping.error);
+            } else {
+                checkMapping(arr[0], arr[1], generatedMapping);
+            }
         });
 
     </script>

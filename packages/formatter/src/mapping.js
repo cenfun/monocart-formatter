@@ -1,3 +1,4 @@
+import generateMapping from './generate-mapping.js';
 
 const findLine = function(list, position) {
     let start = 0;
@@ -64,6 +65,8 @@ const getFormattedPosition = function(mapping, originalPosition) {
 
 
 export default class Mapping {
+
+    static generate = generateMapping;
 
     constructor(formattedContent, mapping) {
         this.formattedContent = formattedContent;

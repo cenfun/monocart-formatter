@@ -64,16 +64,55 @@ const getFormattedPosition = function(mapping, originalPosition) {
 };
 
 
+// =======================================================================================
+
+const isLineSingleCommented = (codeStr) => {
+    const singleBlock = /^\s*\/\//g;
+    return singleBlock.test(codeStr);
+};
+
+const isLineStartCommented = (codeStr) => {
+    const multiStartBlock = /^\s*\/\*/g;
+    return multiStartBlock.test(codeStr);
+};
+
+// multi-comment end but not at end
+const isLineEndCommented = (codeStr) => {
+    const multiEndBlock = /.*\*\//g;
+    return multiEndBlock.test(codeStr);
+};
+
+const isLineEndCommentedToEnd = (codeStr) => {
+    const multiEndBlock = /.*\*\/\s*$/g;
+    return multiEndBlock.test(codeStr);
+};
+
+const isLineBlank = (codeStr) => {
+    const blankBlock = /\S/;
+    return !blankBlock.test(codeStr);
+};
+
+// =======================================================================================
+
 export default class Mapping {
 
     static generate = generateMapping;
 
-    constructor(formattedContent, mapping) {
+    constructor(formattedContent, mapping, parseLines) {
         this.formattedContent = formattedContent;
         this.mapping = mapping;
+        this.formattedLines = this.getFormattedLines(formattedContent);
 
+        this.commentedLines = [];
+        this.blankLines = [];
+        if (parseLines) {
+            this.parseLines(this.formattedLines);
+        }
+    }
+
+    getFormattedLines(formattedContent) {
         let pos = 0;
-        this.formattedLines = formattedContent.split(/\n/).map((text, line) => {
+        const formattedLines = formattedContent.split(/\n/).map((text, line) => {
             const length = text.length;
             const start = pos;
             const end = start + length;
@@ -89,6 +128,47 @@ export default class Mapping {
             };
         });
 
+        return formattedLines;
+    }
+
+    // formattedLines must be without \r\n
+    parseLines(formattedLines) {
+        const commentedLines = [];
+        const blankLines = [];
+
+        let startCommented = false;
+
+        const multiEndHandler = (text, i) => {
+            if (isLineEndCommented(text)) {
+                startCommented = false;
+                if (isLineEndCommentedToEnd(text)) {
+                    commentedLines.push(i);
+                }
+                return;
+            }
+            commentedLines.push(i);
+        };
+
+        formattedLines.forEach((line, i) => {
+            const text = line.text;
+            if (startCommented) {
+                return multiEndHandler(text, i);
+            }
+            if (isLineStartCommented(text)) {
+                startCommented = true;
+                return multiEndHandler(text, i);
+            }
+            if (isLineSingleCommented(text)) {
+                commentedLines.push(i);
+                return;
+            }
+            if (isLineBlank(text)) {
+                blankLines.push(i);
+            }
+        });
+
+        this.commentedLines = commentedLines;
+        this.blankLines = blankLines;
     }
 
     getFormattedSlice(s, e) {
@@ -102,19 +182,6 @@ export default class Mapping {
                 ... lineInfo
             };
         }
-    }
-
-    isFormattedLineEmpty(line) {
-        const lineInfo = this.getFormattedLine(line);
-        if (!lineInfo) {
-            return true;
-        }
-        if (!lineInfo.length) {
-            return true;
-        }
-        const reg = /\S/;
-        const hasCode = reg.test(lineInfo.text);
-        return !hasCode;
     }
 
     getFormattedLocation(originalPosition, skipIndent) {

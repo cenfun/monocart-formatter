@@ -9,13 +9,17 @@ import { format, Mapping } from 'monocart-formatter';
 
 const text = "var a = 1;";
 const type = "js";
+
+// https://github.com/beautify-web/js-beautify
 const options = {};
+
 const res = await format(text, type, options);
 
 const mapping = new Mapping(res.content, res.mapping);
 const location = mapping.getFormattedLocation(41);
 
 ```
+
 - Using Worker Threads on Node.js
 
 ```js

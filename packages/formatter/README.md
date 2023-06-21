@@ -1,6 +1,6 @@
 # monocart-formatter
 
-> JS/CSS/HTML/JSON formatter with mapping for both browser and Node.js.
+> JS/CSS/HTML/JSON formatter with mapping for both browser (Web Worker) and Node.js (Worker Threads).
 
 - Using Web Worker in browser
 

@@ -1,7 +1,7 @@
 {
     "name": "monocart-formatter",
     "version": "1.0.5",
-    "description": "Monocart Formatter",
+    "description": "JS/CSS/HTML/JSON formatter with mapping for both browser (Web Worker) and Node.js (Worker Threads)",
     "private": true,
     "main": "",
     "scripts": {

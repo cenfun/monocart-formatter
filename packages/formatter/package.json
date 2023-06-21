@@ -1,6 +1,7 @@
 {
     "name": "monocart-formatter",
     "version": "1.0.5",
+    "description": "JS/CSS/HTML/JSON formatter with mapping for both browser (Web Worker) and Node.js (Worker Threads)",
     "main": "dist/monocart-formatter.js",
     "exports": {
         ".": "./dist/monocart-formatter.js",
@@ -8,8 +9,7 @@
         "./package.json": "./package.json"
     },
     "files": [
-        "dist",
-        "lib"
+        "dist"
     ],
     "license": "MIT",
     "repository": {

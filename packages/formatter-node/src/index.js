@@ -47,7 +47,7 @@ if (isMainThread) {
 
 } else {
 
-    const formatInWorker = require('../../beautify-worker/src/format.js');
+    const formatInWorker = require('../../formatter-worker/src/format.js');
 
     parentPort.on('message', (message) => {
         const {

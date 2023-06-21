@@ -6,10 +6,10 @@
     "main": "",
     "scripts": {
         "dev": "sf d formatter",
-        "build-beautify": "sf b beautify -p",
-        "build-formatter": "sf b formatter,formatter-node -p",
         "test": "sf b node && node ./scripts/test.js",
-        "build": "sf lint && npm run build-beautify && npm run build-formatter",
+        "build-worker": "sf b formatter-worker,formatter-node -p",
+        "build-formatter": "sf b formatter -p",
+        "build": "sf lint && npm run build-worker && npm run build-formatter",
         "patch": "npm run build && sf publish patch"
     },
     "workspaces": [

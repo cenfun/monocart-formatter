@@ -1,8 +1,8 @@
 {
-    "name": "monocart-beautify-worker",
+    "name": "monocart-formatter-worker",
     "version": "1.0.5",
     "private": true,
-    "main": "dist/monocart-beautify-worker.js",
+    "main": "dist/monocart-formatter-worker.js",
     "files": [
         "dist"
     ],

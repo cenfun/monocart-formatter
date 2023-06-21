@@ -17,6 +17,18 @@ const lzPackage = (name, Util) => {
     Util.writeFileSync(path.resolve(`.temp/${name}.js`), workerData);
 };
 
+const cpPackage = (name, Util) => {
+    console.log(`generating ${name}.js ...`);
+    const fromPath = path.resolve(__dirname, `../packages/${name}/dist/monocart-${name}.js`);
+    if (!fs.existsSync(fromPath)) {
+        Util.logRed(`please build ${name} first, not found build ${fromPath}`);
+        return 0;
+    }
+    const toPath = path.resolve(__dirname, `../packages/formatter/dist/monocart-${name}.js`);
+    fs.cpSync(fromPath, toPath);
+
+};
+
 module.exports = {
 
     build: {
@@ -31,7 +43,7 @@ module.exports = {
             }
 
             if (item.name === 'formatter') {
-                lzPackage('beautify-worker', Util);
+                lzPackage('formatter-worker', Util);
             }
 
             return 0;
@@ -39,6 +51,12 @@ module.exports = {
 
         after: (item, Util) => {
             // console.log('after build');
+
+            if (item.name === 'formatter') {
+                cpPackage('formatter-node', Util);
+            }
+
+
             return 0;
         }
 

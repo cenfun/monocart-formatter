@@ -1,4 +1,4 @@
-const dataStr = require('../../../.temp/beautify-worker.js');
+const dataStr = require('../../../.temp/formatter-worker.js');
 const inflateSync = require('lz-utils/inflate-sync');
 const Mapping = require('./mapping.js');
 

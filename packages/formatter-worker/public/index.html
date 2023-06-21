@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
     <link rel="icon" href="data:,">
-    <title>monocart-beautify-worker</title>
+    <title>monocart-formatter-worker</title>
     <style>
         table {
             width: 100%;
@@ -87,7 +87,7 @@ const bar = ()=> {
     <script>
         const format = (text, type) => {
             return new Promise((resolve) => {
-                const workerUrl = '../dist/monocart-beautify-worker.js';
+                const workerUrl = '../dist/monocart-formatter-worker.js';
                 const worker = new Worker(workerUrl);
                 worker.onmessage = (e) => {
                     if (e.data === 'workerReady') {

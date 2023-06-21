@@ -2,8 +2,14 @@
     "name": "monocart-formatter",
     "version": "1.0.5",
     "main": "dist/monocart-formatter.js",
+    "exports": {
+        ".": "./dist/monocart-formatter.js",
+        "./node": "./dist/monocart-formatter-node.js",
+        "./package.json": "./package.json"
+    },
     "files": [
-        "dist"
+        "dist",
+        "lib"
     ],
     "license": "MIT",
     "repository": {

@@ -1,4 +1,6 @@
 # monocart-formatter
 
-- [formatter](/packages/formatter/)
-- [formatter-worker](/packages/formatter-worker/)
+JS/CSS/HTML/JSON formatter
+
+- [formatter](/packages/formatter) for browser using Web Worker.
+- [formatter-node](/packages/formatter-node) for Node.js using Worker Threads.

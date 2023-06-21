@@ -1,6 +1,6 @@
 # monocart-formatter
 
-JS/CSS/HTML/JSON formatter running in the `browser` with `Web Worker`
+JS/CSS/HTML/JSON formatter for browser using Web Worker.
 
 ```js
 import { format, Mapping } from 'monocart-formatter';
@@ -14,3 +14,5 @@ const mapping = new Mapping(res.content, res.mapping);
 const location = mapping.getFormattedLocation(41);
 
 ```
+
+[formatter-node](/packages/formatter-node) for Nodejs

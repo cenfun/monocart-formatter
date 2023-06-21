@@ -1,4 +1,4 @@
-import generateMapping from './generate-mapping.js';
+const generateMapping = require('./generate-mapping.js');
 
 const findLine = function(list, position) {
     let start = 0;
@@ -93,8 +93,7 @@ const isLineBlank = (codeStr) => {
 };
 
 // =======================================================================================
-
-export default class Mapping {
+class Mapping {
 
     static generate = generateMapping;
 
@@ -211,3 +210,5 @@ export default class Mapping {
     }
 
 }
+
+module.exports = Mapping;

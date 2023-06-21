@@ -1,4 +1,4 @@
-import format from './format.js';
+const format = require('./format.js');
 
 onmessage = function(e) {
     const {

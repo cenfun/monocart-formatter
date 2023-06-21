@@ -1,5 +1,5 @@
-import beautify from 'js-beautify';
-import generateMapping from '../../formatter/src/generate-mapping.js';
+const beautify = require('js-beautify');
+const generateMapping = require('../../formatter/src/generate-mapping.js');
 
 const format = (text, type, options = {}) => {
 
@@ -37,5 +37,4 @@ const format = (text, type, options = {}) => {
     };
 };
 
-
-export default format;
+module.exports = format;

@@ -1,0 +1,16 @@
+{
+    "name": "monocart-formatter-node",
+    "version": "1.0.5",
+    "main": "dist/monocart-formatter-node.js",
+    "files": [
+        "dist"
+    ],
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/cenfun/monocart-formatter.git"
+    },
+    "dependencies": {},
+    "devDependencies": {},
+    "platform": "node"
+}

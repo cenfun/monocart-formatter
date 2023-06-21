@@ -6,9 +6,10 @@
     "main": "",
     "scripts": {
         "dev": "sf d formatter",
-        "build-worker": "sf b worker -p",
-        "build-formatter": "sf b formatter -p",
-        "build": "sf lint && npm run build-worker && npm run build-formatter",
+        "build-beautify": "sf b beautify -p",
+        "build-formatter": "sf b formatter,formatter-node -p",
+        "test": "sf b node && node ./scripts/test.js",
+        "build": "sf lint && npm run build-beautify && npm run build-formatter",
         "patch": "npm run build && sf publish patch"
     },
     "workspaces": [
@@ -19,12 +20,13 @@
     ],
     "license": "MIT",
     "devDependencies": {
-        "eslint": "^8.41.0",
+        "eight-colors": "^1.0.3",
+        "eslint": "^8.43.0",
         "eslint-config-plus": "^1.0.6",
         "eslint-plugin-html": "^7.1.0",
-        "js-beautify": "^1.14.7",
+        "js-beautify": "^1.14.8",
         "lz-utils": "^2.0.1",
-        "stylelint": "^15.6.2",
+        "stylelint": "^15.8.0",
         "stylelint-config-plus": "^1.0.3"
     }
 }

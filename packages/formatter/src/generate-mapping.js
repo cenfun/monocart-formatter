@@ -86,4 +86,4 @@ const generateMapping = (oText, fText) => {
     return result;
 };
 
-export default generateMapping;
+module.exports = generateMapping;

@@ -1,6 +1,6 @@
-import dataStr from '../../../.temp/beautify-worker.js';
-import inflateSync from 'lz-utils/inflate-sync';
-import Mapping from './mapping.js';
+const dataStr = require('../../../.temp/beautify-worker.js');
+const inflateSync = require('lz-utils/inflate-sync');
+const Mapping = require('./mapping.js');
 
 const formatterDataUrl = () => {
     const jsStr = inflateSync(dataStr);
@@ -55,5 +55,7 @@ const format = async (text, type, options) => {
     return res;
 };
 
-export { format, Mapping };
-export default format;
+module.exports = {
+    format,
+    Mapping
+};

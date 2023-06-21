@@ -1,9 +1,9 @@
-# monocart-formatter
+# monocart-formatter-node
 
-JS/CSS/HTML/JSON formatter running in the `browser` with `Web Worker`
+JS/CSS/HTML/JSON formatter running in the `Node.js` with `Worker Threads`
 
 ```js
-import { format, Mapping } from 'monocart-formatter';
+import { format, Mapping } from 'monocart-formatter-node';
 
 const text = "var a = 1;";
 const type = "js";

@@ -1,5 +1,5 @@
 const EC = require('eight-colors');
-const { format, Mapping } = require('../packages/formatter-node/dist/monocart-formatter-node.js');
+const { format, Mapping } = require('monocart-formatter/node');
 
 console.log(format, Mapping);
 

@@ -1,8 +1,8 @@
 # monocart-formatter
 
-JS/CSS/HTML/JSON formatter for both browser and Node.js.
+> JS/CSS/HTML/JSON formatter with mapping for both browser and Node.js.
 
-- browser using Web Worker
+- Using Web Worker in browser
 
 ```js
 import { format, Mapping } from 'monocart-formatter';
@@ -16,7 +16,7 @@ const mapping = new Mapping(res.content, res.mapping);
 const location = mapping.getFormattedLocation(41);
 
 ```
-- Node.js using Worker Threads
+- Using Worker Threads on Node.js
 
 ```js
 import { format, Mapping } from 'monocart-formatter/node';

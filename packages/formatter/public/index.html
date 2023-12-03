@@ -197,6 +197,7 @@ const bar = ()=> {
             const generatedMapping = Mapping.generate(arr[0], arr[1]);
             console.log(arr, generatedMapping);
             if (generatedMapping.error) {
+                console.log('here is mapping error');
                 console.error(arr, generatedMapping.error);
             } else {
                 checkMapping(arr[0], arr[1], generatedMapping);

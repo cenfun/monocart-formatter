@@ -102,8 +102,9 @@ class Mapping {
         this.mapping = mapping;
         this.formattedLines = this.getFormattedLines(formattedContent);
 
-        this.commentedLines = [];
         this.blankLines = [];
+        this.commentLines = [];
+
         if (parseLines) {
             this.parseLines(this.formattedLines);
         }
@@ -132,8 +133,9 @@ class Mapping {
 
     // formattedLines must be without \r\n
     parseLines(formattedLines) {
-        const commentedLines = [];
+
         const blankLines = [];
+        const commentLines = [];
 
         let startCommented = false;
 
@@ -141,11 +143,11 @@ class Mapping {
             if (isLineEndCommented(text)) {
                 startCommented = false;
                 if (isLineEndCommentedToEnd(text)) {
-                    commentedLines.push(i);
+                    commentLines.push(i);
                 }
                 return;
             }
-            commentedLines.push(i);
+            commentLines.push(i);
         };
 
         formattedLines.forEach((line, i) => {
@@ -158,7 +160,7 @@ class Mapping {
                 return multiEndHandler(text, i);
             }
             if (isLineSingleCommented(text)) {
-                commentedLines.push(i);
+                commentLines.push(i);
                 return;
             }
             if (isLineBlank(text)) {
@@ -166,8 +168,9 @@ class Mapping {
             }
         });
 
-        this.commentedLines = commentedLines;
         this.blankLines = blankLines;
+        this.commentLines = commentLines;
+        this.commentedLines = commentLines;
     }
 
     getFormattedSlice(s, e) {

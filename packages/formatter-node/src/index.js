@@ -40,6 +40,8 @@ if (isMainThread) {
     const Mapping = require('../../formatter/src/mapping.js');
 
     module.exports = {
+        VERSION: window.VERSION,
+        TIMESTAMP: window.TIMESTAMP,
         format,
         Mapping
     };

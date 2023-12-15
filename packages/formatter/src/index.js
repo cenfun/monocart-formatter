@@ -56,6 +56,8 @@ const format = async (text, type, options) => {
 };
 
 module.exports = {
+    VERSION: window.VERSION,
+    TIMESTAMP: window.TIMESTAMP,
     format,
     Mapping
 };

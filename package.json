@@ -7,8 +7,8 @@
     "scripts": {
         "dev": "sf d formatter",
         "test": "sf b node && node ./scripts/test.js",
-        "build-worker": "sf b formatter-worker,formatter-node -p",
-        "build-formatter": "sf b formatter -p",
+        "build-worker": "sf b formatter-worker,formatter-node -p patch",
+        "build-formatter": "sf b formatter -p patch",
         "build": "sf lint && npm run build-worker && npm run build-formatter",
         "patch": "npm run build && sf publish patch"
     },

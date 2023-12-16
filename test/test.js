@@ -90,25 +90,30 @@ const main = async () => {
         const content = fs.readFileSync(p).toString('utf-8');
         const lineParser = new LineParser(content);
 
-        // console.log(lineParser.lines);
-
         CG({
             columns: [{
-                id: 'blank'
-            }, {
-                id: 'text',
-                formatter: (v, row) => {
-                    if (row.comment) {
-                        return EC.cyan(v);
+                id: 'indent',
+                formatter: (v) => {
+                    if (!v) {
+                        return '';
                     }
                     return v;
                 }
             }, {
-                id: 'comment'
+                id: 'text'
+            }, {
+                id: 'blank',
+                formatter: (v) => {
+                    if (!v) {
+                        return '';
+                    }
+                    return v;
+                }
+            }, {
+                id: 'length'
             }],
             rows: lineParser.lines
         });
-
 
     });
 

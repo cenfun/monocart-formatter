@@ -1,27 +1,41 @@
+/* eslint-disable no-trailing-spaces,line-comment-position,no-inline-comments,indent,no-multi-spaces,no-multiple-empty-lines */
+        // LineComment
 
-// single line
+console.log('some//thing'); // comment /*
 
-var reg = /\*\/\d/ig
+  // comment /*
+console.log('some//thing/*'); /*
+    ddd
+*/
+                           console.log('some/*/thing');
 
 /**
- * multiple line
- * one
+    * BlockComment
+ *
+       
+        */ console.log('some/*/thing');
 
- */ var a = 1;
-
- var b = 2; // end of line
-
- var c = 3; /*
+console.log('some//thing'); // end of line
+                                        
+/*
+    connected
+*/     console.log('some*//thing'); /*
  cross line
  */
 
- var d = 0; /* inline */ var e = 0;
-
- /*
- multiple line
-
+console.log('some*//thing'); /*
+ cross line
  */
 
- var f = 0;
+    console.log('some*//thing'); /* inline */ console.log('some*//thing');
 
- 
+/*
+ multiple line
+//
+ */
+
+    /**/ console.log('some*//thing'); /*
+        console.log('some//*thing')
+ */
+
+

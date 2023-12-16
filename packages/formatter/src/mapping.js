@@ -45,15 +45,11 @@ class Mapping {
 
     static generate = generateMapping;
 
-    constructor(formattedContent, mapping, parseLines) {
+    constructor(formattedContent, mapping) {
         this.formattedContent = formattedContent;
         this.mapping = mapping;
-        this.lineParser = new LineParser(formattedContent, parseLines);
+        this.lineParser = new LineParser(formattedContent);
         this.formattedLines = this.lineParser.lines;
-        this.blankLines = this.lineParser.blankLines;
-        this.commentLines = this.lineParser.commentLines;
-        this.commentedLines = this.lineParser.commentLines;
-
     }
 
     getFormattedSlice(s, e) {

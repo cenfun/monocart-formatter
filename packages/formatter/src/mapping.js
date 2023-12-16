@@ -1,28 +1,5 @@
 const generateMapping = require('./generate-mapping.js');
-
-const findLine = function(list, position) {
-    let start = 0;
-    let end = list.length - 1;
-    while (end - start > 1) {
-        const i = Math.floor((start + end) * 0.5);
-        const item = list[i];
-        if (position < item.start) {
-            end = i;
-            continue;
-        }
-        if (position > item.end) {
-            start = i;
-            continue;
-        }
-        return list[i];
-    }
-    // last two items, less is start
-    const endItem = list[end];
-    if (position < endItem.start) {
-        return list[start];
-    }
-    return list[end];
-};
+const LineParser = require('./line-parser.js');
 
 const findIndex = function(list, position) {
     let start = 0;
@@ -63,35 +40,6 @@ const getFormattedPosition = function(mapping, originalPosition) {
     return newIndex;
 };
 
-
-// =======================================================================================
-
-const isLineSingleCommented = (codeStr) => {
-    const singleBlock = /^\s*\/\//g;
-    return singleBlock.test(codeStr);
-};
-
-const isLineStartCommented = (codeStr) => {
-    const multiStartBlock = /^\s*\/\*/g;
-    return multiStartBlock.test(codeStr);
-};
-
-// multi-comment end but not at end
-const isLineEndCommented = (codeStr) => {
-    const multiEndBlock = /.*\*\//g;
-    return multiEndBlock.test(codeStr);
-};
-
-const isLineEndCommentedToEnd = (codeStr) => {
-    const multiEndBlock = /.*\*\/\s*$/g;
-    return multiEndBlock.test(codeStr);
-};
-
-const isLineBlank = (codeStr) => {
-    const blankBlock = /\S/;
-    return !blankBlock.test(codeStr);
-};
-
 // =======================================================================================
 class Mapping {
 
@@ -100,77 +48,12 @@ class Mapping {
     constructor(formattedContent, mapping, parseLines) {
         this.formattedContent = formattedContent;
         this.mapping = mapping;
-        this.formattedLines = this.getFormattedLines(formattedContent);
+        this.lineParser = new LineParser(formattedContent, parseLines);
+        this.formattedLines = this.lineParser.lines;
+        this.blankLines = this.lineParser.blankLines;
+        this.commentLines = this.lineParser.commentLines;
+        this.commentedLines = this.lineParser.commentLines;
 
-        this.blankLines = [];
-        this.commentLines = [];
-
-        if (parseLines) {
-            this.parseLines(this.formattedLines);
-        }
-    }
-
-    getFormattedLines(formattedContent) {
-        let pos = 0;
-        const formattedLines = formattedContent.split(/\n/).map((text, line) => {
-            const length = text.length;
-            const start = pos;
-            const end = start + length;
-
-            pos += length + 1;
-
-            return {
-                line,
-                start,
-                end,
-                length,
-                text
-            };
-        });
-
-        return formattedLines;
-    }
-
-    // formattedLines must be without \r\n
-    parseLines(formattedLines) {
-
-        const blankLines = [];
-        const commentLines = [];
-
-        let startCommented = false;
-
-        const multiEndHandler = (text, i) => {
-            if (isLineEndCommented(text)) {
-                startCommented = false;
-                if (isLineEndCommentedToEnd(text)) {
-                    commentLines.push(i);
-                }
-                return;
-            }
-            commentLines.push(i);
-        };
-
-        formattedLines.forEach((line, i) => {
-            const text = line.text;
-            if (startCommented) {
-                return multiEndHandler(text, i);
-            }
-            if (isLineStartCommented(text)) {
-                startCommented = true;
-                return multiEndHandler(text, i);
-            }
-            if (isLineSingleCommented(text)) {
-                commentLines.push(i);
-                return;
-            }
-            if (isLineBlank(text)) {
-                blankLines.push(i);
-            }
-        });
-
-        this.blankLines = blankLines;
-        this.commentLines = commentLines;
-        this.commentedLines = commentLines;
     }
 
     getFormattedSlice(s, e) {
@@ -190,7 +73,7 @@ class Mapping {
 
         const formattedPosition = getFormattedPosition(this.mapping, originalPosition);
 
-        const formattedLine = findLine(this.formattedLines, formattedPosition);
+        const formattedLine = this.lineParser.findLine(formattedPosition);
         // console.log(formattedLine);
 
         let indent = 0;

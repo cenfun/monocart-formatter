@@ -1,6 +1,7 @@
 const dataStr = require('../../../.temp/formatter-worker.js');
 const inflateSync = require('lz-utils/inflate-sync');
 const Mapping = require('./mapping.js');
+const LineParser = require('./line-parser.js');
 
 const formatterDataUrl = () => {
     const jsStr = inflateSync(dataStr);
@@ -59,5 +60,6 @@ module.exports = {
     VERSION: window.VERSION,
     TIMESTAMP: window.TIMESTAMP,
     format,
-    Mapping
+    Mapping,
+    LineParser
 };

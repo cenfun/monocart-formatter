@@ -1,5 +1,10 @@
+const fs = require('fs');
+const path = require('path');
 const EC = require('eight-colors');
-const { format, Mapping } = require('monocart-formatter/node');
+const CG = require('console-grid');
+const {
+    format, Mapping, LineParser
+} = require('monocart-formatter/node');
 
 console.log(format, Mapping);
 
@@ -75,6 +80,37 @@ const main = async () => {
 
     }
 
+    const files = [
+        path.resolve(__dirname, 'example.css'),
+        path.resolve(__dirname, 'example.js')
+    ];
+
+
+    files.forEach((p) => {
+        const content = fs.readFileSync(p).toString('utf-8');
+        const lineParser = new LineParser(content);
+
+        // console.log(lineParser.lines);
+
+        CG({
+            columns: [{
+                id: 'blank'
+            }, {
+                id: 'text',
+                formatter: (v, row) => {
+                    if (row.comment) {
+                        return EC.cyan(v);
+                    }
+                    return v;
+                }
+            }, {
+                id: 'comment'
+            }],
+            rows: lineParser.lines
+        });
+
+
+    });
 
 };
 

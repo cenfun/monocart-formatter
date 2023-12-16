@@ -6,7 +6,7 @@
     "main": "",
     "scripts": {
         "dev": "sf d formatter",
-        "test": "sf b node && node ./scripts/test.js",
+        "test": "npm run build && node ./test/test.js",
         "build-worker": "sf b formatter-worker,formatter-node -p patch",
         "build-formatter": "sf b formatter -p patch",
         "build": "sf lint && npm run build-worker && npm run build-formatter",
@@ -20,6 +20,7 @@
     ],
     "license": "MIT",
     "devDependencies": {
+        "console-grid": "^2.0.1",
         "eight-colors": "^1.0.3",
         "eslint": "^8.55.0",
         "eslint-config-plus": "^1.0.6",

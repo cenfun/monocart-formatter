@@ -38,12 +38,14 @@ if (isMainThread) {
     };
 
     const Mapping = require('../../formatter/src/mapping.js');
+    const LineParser = require('../../formatter/src/line-parser.js');
 
     module.exports = {
         VERSION: window.VERSION,
         TIMESTAMP: window.TIMESTAMP,
         format,
-        Mapping
+        Mapping,
+        LineParser
     };
 
 

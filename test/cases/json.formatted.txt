@@ -1,0 +1,7 @@
+{
+    "a": "1",
+    "build-worker": "sf b worker -p",
+    "build-formatter": "sf b formatter -p",
+    "build": "sf lint && npm run build-worker && npm run build-formatter",
+    "patch": "npm run build && sf publish patch"
+}

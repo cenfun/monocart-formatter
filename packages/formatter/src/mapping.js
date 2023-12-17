@@ -65,28 +65,29 @@ class Mapping {
         }
     }
 
+    // add column
     getFormattedLocation(originalPosition, skipIndent) {
 
         const formattedPosition = getFormattedPosition(this.mapping, originalPosition);
 
+        // always have lines and find line
         const formattedLine = this.lineParser.findLine(formattedPosition);
         // console.log(formattedLine);
 
-        let indent = 0;
+        const {
+            start, indent, length
+        } = formattedLine;
+
+        let min = 0;
         if (skipIndent) {
-            indent = formattedLine.text.search(/\S/);
-            if (indent === -1) {
-                indent = formattedLine.length;
-            }
-            // console.log('indent', indent, [formattedLine.text]);
+            min = indent;
         }
 
-        let column = Math.max(formattedPosition - formattedLine.start, indent);
-        column = Math.min(column, formattedLine.length);
+        let column = Math.max(formattedPosition - start, min);
+        column = Math.min(column, length);
 
         return {
             column,
-            indent,
             ... formattedLine
         };
     }

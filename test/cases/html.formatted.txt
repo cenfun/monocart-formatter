@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>title</title>
+    <style>
+        table {
+            width: 100%;
+        }
+
+        table td {
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <div>
+            <span>
+</body>
+
+</html>

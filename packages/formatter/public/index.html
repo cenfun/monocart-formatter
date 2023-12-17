@@ -6,98 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
     <link rel="icon" href="data:,">
     <title>monocart-formatter</title>
-    <style>
-        .header {
-            padding-bottom: 10px;
-            text-align: center;
-        }
-
-        table {
-            width: 100%;
-        }
-
-        table td {
-            text-align: center;
-        }
-
-        textarea {
-            width: 500px;
-            height: 160px;
-        }
-
-    </style>
     <!--inject:start-->
     <script src="../dist/monocart-formatter.js"></script>
     <!--inject:end-->
 </head>
 
 <body>
-    <div class="header">
-        <label>
-            <input type="checkbox" class="cb-check-mapping" checked />
-            check mapping
-        </label>
-    </div>
-    <table>
-        <tr>
-            <td><textarea class="input-js">console.log(1);var   a= true;if(a){console.log(a)}
-        
-var b = 2;  
-    
-const foo = ()   => {
-
-};
-
-const bar = ()=> {
-
-};
-                </textarea></td>
-                <td>
-                    <button class="format-js">format-js</button>
-                    <div class="duration-js"></div>
-                </td>
-                <td><textarea class="output-js"></textarea></td>
-        </tr>
-        <tr>
-            <td><textarea class="input-css">.red {
-    color: red;
-}
-
-.unused,.and-used {
-    position: relative;
-}
-
-/* comments */
-.inline-unused{font-size:medium;}.inline-used {position:relative;}.next-unused{color:none}
-            </textarea></td>
-            <td>
-                <button class="format-css">format-css</button>
-                <div class="duration-css"></div>
-            </td>
-            <td><textarea class="output-css"></textarea></td>
-        </tr>
-        <tr>
-            <td><textarea class="input-html"></textarea></td>
-            <td>
-                <button class="format-html">format-html</button>
-                <div class="duration-html"></div>
-            </td>
-            <td><textarea class="output-html"></textarea></td>
-        </tr>
-        <tr>
-            <td><textarea class="input-json">{"a":"1",
-                "build-worker": "sf b worker -p","build-formatter": "sf b formatter -p",
-                 "build": "sf lint && npm run build-worker && npm run build-formatter",
-                "patch": "npm run build && sf publish patch"
-            }
-            </textarea></td>
-            <td>
-                <button class="format-json">format-json</button>
-                <div class="duration-json"></div>
-            </td>
-            <td><textarea class="output-json"></textarea></td>
-        </tr>
-    </table>
     <script>
         const { format, Mapping } = window['monocart-formatter'];
 
@@ -123,105 +37,75 @@ const bar = ()=> {
 
         };
 
-        document.querySelector('.input-html').value = `
-        <!DOCTYPE html>
-            <html>
-                <head>
-                    <meta charset="utf-8">
-                    <title>title</title>
-                    <style>
-                        table { width: 100%;}
-                        table td { text-align: center; }
-                    </style>
-                </head>
-                <body>
-                    <div><div>
-                    <span>
-                </body>
-            </html>
-        `;
+        const testMapping = () => {
+            const list = [
+                ['aaa', 'aaa'],
+                ['a  a  a', 'a\na\na'],
+                ['var  a=1;var b;', 'var a = 1;\nvar b;'],
+                ['aaa', 'a a a '],
+                ['aaa ', 'a a a'],
+                ['aaab', 'a a a'],
+                ['aaa', 'a a ab'],
+                // error case
+                ['  error case', '   a a a']
+            ];
 
-        const ls = ['js', 'css', 'html', 'json'];
-
-        ls.forEach((k) => {
-
-            document.querySelector(`.format-${k}`).addEventListener('click', async () => {
-        
-                const time_start = Date.now();
-                const original = document.querySelector(`.input-${k}`).value;
-
-                const res = await format(original, k);
-                // console.log(res);
-
-                // console.log([original, res.content]);
-
-                const duration = Date.now() - time_start;
-                document.querySelector(`.duration-${k}`).innerHTML = duration.toLocaleString();
-
-                if (res.error) {
-                    console.error(res.error.message);
-                    return;
+            list.forEach((arr) => {
+                const generatedMapping = Mapping.generate(arr[0], arr[1]);
+                console.log(arr, generatedMapping);
+                if (generatedMapping.error) {
+                    console.log('here is mapping error');
+                    console.error(arr, generatedMapping.error);
+                } else {
+                    checkMapping(arr[0], arr[1], generatedMapping);
                 }
-
-                document.querySelector(`.output-${k}`).value = res.content;
-
-                if (document.querySelector('.cb-check-mapping').checked) {
-
-                    const formatted = res.content;
-                    // const formattedMapping = res.mapping;
-                    // test generate api locally
-                    const generatedMapping = Mapping.generate(original, formatted);
-
-                    console.log(k, generatedMapping);
-
-                    checkMapping(original, formatted, generatedMapping);
-                }
-
             });
 
-        });
+            const original = 'aaa\n\tbbb\t ccc';
+            const formatted = 'aaa\n    bbb\n    \nccc';
+            const generatedMapping = Mapping.generate(original, formatted);
+            const mapping = new Mapping(formatted, generatedMapping);
+            console.log([original, formatted], generatedMapping);
+            const loc1 = mapping.getFormattedLocation(4);
+            const s1 = formatted[loc1.start + loc1.column];
+            console.assert(s1 === ' ');
 
-        const list = [
-            ['aaa', 'aaa'],
-            ['a  a  a', 'a\na\na'],
-            ['var  a=1;var b;', 'var a = 1;\nvar b;'],
-            ['aaa', 'a a a '],
-            ['aaa ', 'a a a'],
-            ['aaab', 'a a a'],
-            ['aaa', 'a a ab'],
-            // error case
-            ['  error case', '   a a a']
-        ];
+            const loc2 = mapping.getFormattedLocation(4, true);
+            const s2 = formatted[loc2.start + loc2.column];
+            console.assert(s2 === 'b');
 
-        list.forEach((arr) => {
-            const generatedMapping = Mapping.generate(arr[0], arr[1]);
-            console.log(arr, generatedMapping);
-            if (generatedMapping.error) {
-                console.log('here is mapping error');
-                console.error(arr, generatedMapping.error);
-            } else {
-                checkMapping(arr[0], arr[1], generatedMapping);
+            const loc3 = mapping.getFormattedLocation(9, true);
+            console.log(loc3, original[9]);
+            const s3 = formatted[loc3.start + loc3.column];
+            console.log([s3]);
+            console.assert(loc3.indent === 4);
+        };
+
+        const loadTestCases = async () => {
+            const res = await fetch('test/test-cases.json');
+            // console.log(res);
+            const json = await res.json();
+            return json;
+        };
+
+        const testFormat = async (testCases) => {
+            for (const item of testCases) {
+
+                console.log('===========================================', item.name);
+                const { content, mapping } = await format(item.content, item.type);
+                console.log(mapping);
+                console.assert(content, item.formattedContent);
+
             }
-        });
+        };
 
-        const original = 'aaa\n\tbbb\t ccc';
-        const formatted = 'aaa\n    bbb\n    \nccc';
-        const generatedMapping = Mapping.generate(original, formatted);
-        const mapping = new Mapping(formatted, generatedMapping);
-        console.log([original, formatted], generatedMapping);
-        const loc1 = mapping.getFormattedLocation(4);
-        const s1 = formatted[loc1.start + loc1.column];
-        console.assert(s1 === ' ');
+        window.onload = async () => {
+            testMapping();
+            const testCases = await loadTestCases();
+            console.log(testCases);
+            await testFormat(testCases);
 
-        const loc2 = mapping.getFormattedLocation(4, true);
-        const s2 = formatted[loc2.start + loc2.column];
-        console.assert(s2 === 'b');
-
-        const loc3 = mapping.getFormattedLocation(9, true);
-        console.log(loc3, original[9]);
-        const s3 = formatted[loc3.start + loc3.column];
-        console.log([s3]);
-        console.assert(loc3.indent === 4);
+        };
 
     </script>
 </body>

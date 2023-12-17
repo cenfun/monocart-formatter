@@ -9,6 +9,12 @@ console.log('some//thing/*'); /*
 */
                            console.log('some/*/thing');
 
+     console.log(`
+        /*
+            //
+        */
+     `);
+
 /**
     * BlockComment
  *

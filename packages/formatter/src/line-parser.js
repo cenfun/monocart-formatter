@@ -2,6 +2,11 @@ class LineParser {
     constructor(content = '') {
         let pos = 0;
 
+        // force to string
+        if (typeof content !== 'string') {
+            content = `${content}`;
+        }
+
         // only \n, common on Linux and macOS
         // \r\n, common on Windows
         this.lines = content.split(/\n/).map((text, line) => {

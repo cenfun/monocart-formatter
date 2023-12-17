@@ -1,0 +1,15 @@
+console.log(1);
+var a = true;
+if (a) {
+    console.log(a)
+}
+
+var b = 2;
+
+const foo = () => {
+
+};
+
+const bar = () => {
+
+};

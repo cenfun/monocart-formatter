@@ -7,15 +7,6 @@ const testCases = require('./test-cases.json');
 
 const main = async () => {
 
-    for (const item of testCases) {
-
-        console.log('===========================================', item.name);
-        const { content, mapping } = await format(item.content, item.type);
-        console.log(mapping);
-        console.assert(content, item.formattedContent);
-
-    }
-
     testCases.forEach((item) => {
         // const source = item.formattedContent;
         const source = item.content;
@@ -48,6 +39,15 @@ const main = async () => {
         });
 
     });
+
+    for (const item of testCases) {
+
+        console.log('===========================================', item.name);
+        const { content, mapping } = await format(item.content, item.type);
+        console.log(mapping);
+        console.assert(content, item.formattedContent);
+
+    }
 
 };
 

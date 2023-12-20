@@ -1,3 +1,5 @@
+const CommentParser = require('./comment-parser.js');
+
 class LineParser {
     constructor(content = '') {
         let pos = 0;
@@ -6,6 +8,9 @@ class LineParser {
         if (typeof content !== 'string') {
             content = `${content}`;
         }
+
+        const commentParser = new CommentParser(content);
+        this.comments = commentParser.comments;
 
         // only \n, common on Linux and macOS
         // \r\n, common on Windows
@@ -26,26 +31,40 @@ class LineParser {
             pos += length + n;
 
             // =============================
-            let blank = false;
             const blankBlock = /\S/;
+
+            let blank = false;
             if (!blankBlock.test(text)) {
                 blank = true;
             }
 
             // =============================
+            let comment = false;
             let indent = length;
             if (!blank) {
                 indent = text.search(blankBlock);
+
+                if (commentParser.isComment(start + indent, end)) {
+                    comment = true;
+                }
+
             }
+
+            // =============================
 
             return {
                 line,
+
+                length,
+                indent,
+
                 start,
                 end,
-                length,
-                text,
+
                 blank,
-                indent
+                comment,
+
+                text
             };
         });
     }

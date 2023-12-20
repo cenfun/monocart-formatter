@@ -39,13 +39,15 @@ if (isMainThread) {
 
     const Mapping = require('../../formatter/src/mapping.js');
     const LineParser = require('../../formatter/src/line-parser.js');
+    const CommentParser = require('../../formatter/src/comment-parser.js');
 
     module.exports = {
         VERSION: window.VERSION,
         TIMESTAMP: window.TIMESTAMP,
         format,
         Mapping,
-        LineParser
+        LineParser,
+        CommentParser
     };
 
 

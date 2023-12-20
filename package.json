@@ -23,7 +23,7 @@
     "devDependencies": {
         "console-grid": "^2.0.1",
         "eight-colors": "^1.0.3",
-        "eslint": "^8.55.0",
+        "eslint": "^8.56.0",
         "eslint-config-plus": "^1.0.6",
         "eslint-plugin-html": "^7.1.0",
         "js-beautify": "^1.14.11",

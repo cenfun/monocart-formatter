@@ -54,26 +54,46 @@ const main = async () => {
 
     // test comments
     const files = [{
-        name: 'comments.js',
+        path: path.resolve('test/cases/', 'comments.js'),
         commentsCount: 15,
         commentLinesCount: 21
     }, {
-        name: 'comments.css',
+        path: path.resolve('test/cases/', 'comments.css'),
         commentsCount: 2,
         commentLinesCount: 5
     }, {
-        name: 'comments.vue',
-        commentsCount: 48,
-        commentLinesCount: 48
+        path: path.resolve('packages/formatter/src/generate-mapping.js'),
+        commentsCount: 9,
+        commentLinesCount: 9
+    }, {
+        path: path.resolve('test/test-cases.json'),
+        commentsCount: 0,
+        commentLinesCount: 0
+    }, {
+        path: path.resolve('package.json'),
+        commentsCount: 0,
+        commentLinesCount: 0
+    }, {
+        path: path.resolve('README.md'),
+        commentsCount: 0,
+        commentLinesCount: 0
     }];
 
     files.forEach((item) => {
-        const source = fs.readFileSync(path.resolve('test/cases/', item.name)).toString('utf-8');
+        item.name = path.basename(item.path);
+
+        const source = fs.readFileSync(item.path).toString('utf-8');
 
         const lineParser = new LineParser(source);
-        const commentLines = lineParser.lines.filter((l) => l.comment).map((c) => c.text);
+
+        // add line for comments
+        lineParser.comments.forEach((comment) => {
+            comment.line = lineParser.findLine(comment.start).line;
+        });
+
+        const commentLines = lineParser.lines.filter((l) => l.comment).map((c) => `${EC.yellow(c.line + 1)} ${EC.green(c.text)}`);
         console.log('===========================================', item.name);
-        console.log(commentLines);
+        console.log(commentLines.join('\n'));
 
 
         if (lineParser.comments.length !== item.commentsCount) {
@@ -85,6 +105,7 @@ const main = async () => {
         }
 
     });
+
 
 };
 

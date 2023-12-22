@@ -90,6 +90,14 @@ const main = async () => {
                     return v;
                 }
             }, {
+                id: 'comment',
+                formatter: (v) => {
+                    if (!v) {
+                        return '';
+                    }
+                    return v;
+                }
+            }, {
                 id: 'length'
             }],
             rows: lineParser.lines

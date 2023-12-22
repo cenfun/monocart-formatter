@@ -1,3 +1,7 @@
+* 2.2.0
+    - added mapping parser class
+    - added locator class
+
 * 2.1.0
     - added comment parser class
 

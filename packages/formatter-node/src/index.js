@@ -37,15 +37,22 @@ if (isMainThread) {
         });
     };
 
-    const Mapping = require('../../formatter/src/mapping.js');
+    const generateMapping = require('../../formatter/src/generate-mapping.js');
+
+    const Locator = require('../../formatter/src/locator.js');
+    const MappingParser = require('../../formatter/src/mapping-parser.js');
     const LineParser = require('../../formatter/src/line-parser.js');
     const CommentParser = require('../../formatter/src/comment-parser.js');
 
     module.exports = {
         VERSION: window.VERSION,
         TIMESTAMP: window.TIMESTAMP,
+
         format,
-        Mapping,
+        generateMapping,
+
+        Locator,
+        MappingParser,
         LineParser,
         CommentParser
     };

@@ -1,6 +1,10 @@
 const dataStr = require('../../../.temp/formatter-worker.js');
 const inflateSync = require('lz-utils/inflate-sync');
-const Mapping = require('./mapping.js');
+
+const generateMapping = require('./generate-mapping.js');
+
+const Locator = require('./locator.js');
+const MappingParser = require('./mapping-parser.js');
 const LineParser = require('./line-parser.js');
 const CommentParser = require('./comment-parser.js');
 
@@ -60,8 +64,12 @@ const format = async (text, type, options) => {
 module.exports = {
     VERSION: window.VERSION,
     TIMESTAMP: window.TIMESTAMP,
+
     format,
-    Mapping,
+    generateMapping,
+
+    Locator,
+    MappingParser,
     LineParser,
     CommentParser
 };

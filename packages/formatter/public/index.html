@@ -13,72 +13,58 @@
 
 <body>
     <script>
-        const { format, Mapping } = window['monocart-formatter'];
+        const {
+            format, generateMapping, MappingParser
+        } = window['monocart-formatter'];
 
-        const checkMapping = (original, formatted, formattedMapping) => {
-            const emptyReg = /\s/;
-            const mapping = new Mapping(formatted, formattedMapping);
-            for (let i = 0, l = original.length; i < l; i++) {
-                const s1 = original[i];
+        const emptyReg = /\s/;
+
+        const checkOriginalToFormatted = (originalContent, formattedContent, mappingParser) => {
+            console.log('============= checkOriginalToFormatted');
+            for (let i = 0, l = originalContent.length; i < l; i++) {
+                const s1 = originalContent[i];
                 if (emptyReg.test(s1)) {
                     continue;
                 }
-                const loc = mapping.getFormattedLocation(i);
-                const j = loc.start + loc.column;
+                const formattedPosition = mappingParser.originalToFormatted(i);
                 // out of text, original has more non-null characters
-                if (j >= formatted.length) {
+                if (formattedPosition >= formattedContent.length) {
                     continue;
                 }
-                const s2 = formatted[j];
+                const s2 = formattedContent[formattedPosition];
                 if (s1 !== s2) {
-                    console.error([i, j], [s1, s2], loc);
+                    console.error([i, formattedPosition], [s1, s2]);
                 }
             }
-
         };
 
-        const testMapping = () => {
-            const list = [
-                ['aaa', 'aaa'],
-                ['a  a  a', 'a\na\na'],
-                ['var  a=1;var b;', 'var a = 1;\nvar b;'],
-                ['aaa', 'a a a '],
-                ['aaa ', 'a a a'],
-                ['aaab', 'a a a'],
-                ['aaa', 'a a ab'],
-                // error case
-                ['  error case', '   a a a']
-            ];
-
-            list.forEach((arr) => {
-                const generatedMapping = Mapping.generate(arr[0], arr[1]);
-                console.log(arr, generatedMapping);
-                if (generatedMapping.error) {
-                    console.log('here is mapping error');
-                    console.error(arr, generatedMapping.error);
-                } else {
-                    checkMapping(arr[0], arr[1], generatedMapping);
+        const checkFormattedToOriginal = (originalContent, formattedContent, mappingParser) => {
+            console.log('============= checkFormattedToOriginal');
+            for (let i = 0, l = formattedContent.length; i < l; i++) {
+                const s1 = formattedContent[i];
+                if (emptyReg.test(s1)) {
+                    continue;
                 }
-            });
+                const originalPosition = mappingParser.formattedToOriginal(i);
+                // out of text, original has more non-null characters
+                if (originalPosition >= originalContent.length) {
+                    continue;
+                }
+                const s2 = originalContent[originalPosition];
+                if (s1 !== s2) {
+                    console.error([i, originalPosition], [s1, s2], originalContent, formattedContent);
+                }
+            }
+        };
 
-            const original = 'aaa\n\tbbb\t ccc';
-            const formatted = 'aaa\n    bbb\n    \nccc';
-            const generatedMapping = Mapping.generate(original, formatted);
-            const mapping = new Mapping(formatted, generatedMapping);
-            console.log([original, formatted], generatedMapping);
-            const loc1 = mapping.getFormattedLocation(4);
-            const s1 = formatted[loc1.start + loc1.column];
-            console.assert(s1 === ' ');
+        const checkMapping = (originalContent, formattedContent, mappingData) => {
 
-            const loc2 = mapping.getFormattedLocation(4, true);
-            const s2 = formatted[loc2.start + loc2.column];
-            console.assert(s2 === 'b');
+            // console.log(mappingData);
 
-            const loc3 = mapping.getFormattedLocation(9, true);
-            console.log(loc3, original[9]);
-            const s3 = formatted[loc3.start + loc3.column];
-            console.log([s3]);
-            console.assert(loc3.indent === 4);
+            const mappingParser = new MappingParser(mappingData);
+            checkOriginalToFormatted(originalContent, formattedContent, mappingParser);
+            checkFormattedToOriginal(originalContent, formattedContent, mappingParser);
+
         };
 
         const loadTestCases = async () => {
@@ -94,16 +80,53 @@
                 console.log('===========================================', item.name);
                 const { content, mapping } = await format(item.content, item.type);
                 console.log(mapping);
-                console.assert(content, item.formattedContent);
+
+                // all \r will be removed after formatted
+                const formattedContent = item.formattedContent.replace(/\r/g, '');
+                console.assert(content === formattedContent);
+
+                // the mapping is also no \r
+                checkMapping(item.content, content, mapping);
 
             }
         };
 
+        const testMapping = () => {
+        
+            const list = [
+                ['aaa', 'aaa'],
+                ['a   a\n  a', 'a\na\na'],
+                ['a a  a', 'a\r\na\r\n\r\na'],
+                ['var  a=1;\r\nvar b;', 'var a = 1;\nvar b;'],
+                ['console.log(1);var   a= true;', 'console.log(1);\r\nvar a = true;'],
+                ['aaa\n\tbbb\t ccc', 'aaa\n    bbb\n    \nccc'],
+                ['aaa', 'a a a '],
+                ['aaa ', 'a a a'],
+                ['aaab', 'a a a'],
+                ['aaa', 'a a ab'],
+                // error case
+                ['  error case', '   a a a']
+            ];
+
+            list.forEach((arr) => {
+                const mapping = generateMapping(arr[0], arr[1]);
+                console.log(arr, mapping);
+                if (mapping.error) {
+                    console.log('it should be a mapping error here');
+                    console.error(arr, mapping.error);
+                } else {
+                    checkMapping(arr[0], arr[1], mapping);
+                }
+            });
+
+        };
+
         window.onload = async () => {
-            testMapping();
             const testCases = await loadTestCases();
             console.log(testCases);
             await testFormat(testCases);
+
+            testMapping();
 
         };
 

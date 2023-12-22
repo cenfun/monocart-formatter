@@ -29,6 +29,7 @@ const format = (text, type, options = {}) => {
 
     const formattedText = formatter(text, options);
 
+    // all \r will be removed after formatted
     const mapping = generateMapping(text, formattedText);
 
     return {

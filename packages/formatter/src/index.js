@@ -17,7 +17,12 @@ const formatterDataUrl = () => {
 };
 
 let workerUrl;
-const formatInWorker = (text, type, options) => {
+const format = (text, type, options) => {
+
+    if (typeof text !== 'string') {
+        text = String(text);
+    }
+
     if (!workerUrl) {
         workerUrl = new URL(formatterDataUrl());
     }
@@ -47,18 +52,6 @@ const formatInWorker = (text, type, options) => {
         };
 
     });
-};
-
-
-const format = async (text, type, options) => {
-
-    if (typeof text !== 'string') {
-        text = String(text);
-    }
-
-    const res = await formatInWorker(text, type, options);
-
-    return res;
 };
 
 module.exports = {

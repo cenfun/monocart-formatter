@@ -1,0 +1,14 @@
+{
+    "name": "monocart-formatter-node-worker",
+    "version": "2.2.0",
+    "private": true,
+    "main": "dist/monocart-formatter-node-worker.js",
+    "type": "module",
+    "files": [
+        "dist"
+    ],
+    "license": "MIT",
+    "dependencies": {},
+    "devDependencies": {},
+    "platform": "node"
+}

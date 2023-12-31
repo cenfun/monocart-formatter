@@ -32,6 +32,8 @@ module.exports = {
 
             if (item.name === 'formatter') {
                 lzPackage('formatter-worker', Util);
+            } else if (item.name === 'formatter-node') {
+                lzPackage('formatter-node-worker', Util);
             }
 
             return 0;

@@ -8,8 +8,8 @@
         "dev": "sf d formatter",
         "test": "node ./test/test.js",
         "build-test": "node ./scripts/build-test.js",
-        "build-worker": "sf b formatter-worker,formatter-node -p patch",
-        "build-formatter": "sf b formatter -p patch",
+        "build-worker": "sf b formatter-worker,formatter-node-worker -p patch",
+        "build-formatter": "sf b formatter,formatter-node -p patch",
         "build": "sf lint && npm run build-test && npm run build-worker && npm run build-formatter",
         "patch": "npm run build && sf publish patch"
     },

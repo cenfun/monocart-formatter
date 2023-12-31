@@ -1,78 +1,71 @@
-const {
-    Worker, isMainThread, parentPort
-} = require('worker_threads');
+const { Worker } = require('worker_threads');
+const dataStr = require('../../../.temp/formatter-node-worker.js');
+const inflateSync = require('lz-utils/inflate-sync');
 
-if (isMainThread) {
+const generateMapping = require('../../formatter/src/generate-mapping.js');
 
-    const format = (text, type, options) => {
+const Locator = require('../../formatter/src/locator.js');
+const MappingParser = require('../../formatter/src/mapping-parser.js');
+const LineParser = require('../../formatter/src/line-parser.js');
+const CommentParser = require('../../formatter/src/comment-parser.js');
 
-        if (typeof text !== 'string') {
-            text = String(text);
-        }
+const formatterDataUrl = () => {
+    const jsStr = inflateSync(dataStr);
+    const b64 = Buffer.from(jsStr).toString('base64');
+    // console.log(jsStr);
+    const objectURL = `data:text/javascript;base64,${b64}`;
+    // console.log(objectURL);
+    return objectURL;
+};
 
-        return new Promise((resolve) => {
+let workerUrl;
+const format = (text, type, options) => {
 
-            const worker = new Worker(__filename);
+    if (typeof text !== 'string') {
+        text = String(text);
+    }
 
-            worker.on('message', (message) => {
-                if (message === 'workerReady') {
-                    worker.postMessage({
-                        text,
-                        type,
-                        options
-                    });
-                    return;
-                }
-                resolve(message);
-                worker.terminate();
-            });
+    if (!workerUrl) {
+        workerUrl = new URL(formatterDataUrl());
+    }
 
-            worker.on('error', (err) => {
-                resolve({
-                    error: err
+    return new Promise((resolve) => {
+
+        const worker = new Worker(workerUrl);
+
+        worker.on('message', (message) => {
+            if (message === 'workerReady') {
+                worker.postMessage({
+                    text,
+                    type,
+                    options
                 });
-                worker.terminate();
-            });
-
+                return;
+            }
+            resolve(message);
+            worker.terminate();
         });
-    };
 
-    const generateMapping = require('../../formatter/src/generate-mapping.js');
+        worker.on('error', (err) => {
+            resolve({
+                error: err
+            });
+            worker.terminate();
+        });
 
-    const Locator = require('../../formatter/src/locator.js');
-    const MappingParser = require('../../formatter/src/mapping-parser.js');
-    const LineParser = require('../../formatter/src/line-parser.js');
-    const CommentParser = require('../../formatter/src/comment-parser.js');
-
-    module.exports = {
-        VERSION: window.VERSION,
-        TIMESTAMP: window.TIMESTAMP,
-
-        format,
-        generateMapping,
-
-        Locator,
-        MappingParser,
-        LineParser,
-        CommentParser
-    };
-
-
-} else {
-
-    const formatInWorker = require('../../formatter-worker/src/format.js');
-
-    parentPort.on('message', (message) => {
-        const {
-            text, type, options
-        } = message;
-
-        const result = formatInWorker(text, type, options);
-
-        parentPort.postMessage(result);
     });
+};
 
-    parentPort.postMessage('workerReady');
+module.exports = {
+    VERSION: window.VERSION,
+    TIMESTAMP: window.TIMESTAMP,
 
-}
+    format,
+    generateMapping,
+
+    Locator,
+    MappingParser,
+    LineParser,
+    CommentParser
+};
 

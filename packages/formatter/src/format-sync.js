@@ -1,7 +1,7 @@
 const beautify = require('js-beautify');
-const generateMapping = require('../../formatter/src/generate-mapping.js');
+const generateMapping = require('./generate-mapping.js');
 
-const format = (text, type, options = {}) => {
+const formatSync = (text, type, options = {}) => {
 
     const types = {
         js: 'js',
@@ -38,4 +38,4 @@ const format = (text, type, options = {}) => {
     };
 };
 
-module.exports = format;
+module.exports = formatSync;

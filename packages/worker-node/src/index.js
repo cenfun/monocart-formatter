@@ -1,13 +1,13 @@
 import { parentPort } from 'worker_threads';
 
-import format from '../../formatter-worker/src/format.js';
+import formatSync from '../../formatter/src/format-sync.js';
 
 parentPort.on('message', (message) => {
     const {
         text, type, options
     } = message;
 
-    const result = format(text, type, options);
+    const result = formatSync(text, type, options);
 
     parentPort.postMessage(result);
 });

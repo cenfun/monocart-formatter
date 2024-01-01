@@ -1,5 +1,5 @@
 const { Worker } = require('worker_threads');
-const dataStr = require('../../../.temp/formatter-node-worker.js');
+const dataStr = require('../../../.temp/worker-node.js');
 const inflateSync = require('lz-utils/inflate-sync');
 
 const generateMapping = require('../../formatter/src/generate-mapping.js');

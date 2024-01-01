@@ -6,7 +6,7 @@ const path = require('path');
 
 const lzPackage = (name, Util) => {
     Util.logCyan(`generating ${name}.js ...`);
-    const workerPath = path.resolve(__dirname, `../packages/${name}/dist/monocart-${name}.js`);
+    const workerPath = path.resolve(__dirname, `../packages/${name}/dist/monocart-formatter-${name}.js`);
     if (!fs.existsSync(workerPath)) {
         Util.logRed(`please build ${name} first, not found build ${workerPath}`);
         return 0;
@@ -31,9 +31,9 @@ module.exports = {
             }
 
             if (item.name === 'formatter') {
-                lzPackage('formatter-worker', Util);
+                lzPackage('worker', Util);
             } else if (item.name === 'formatter-node') {
-                lzPackage('formatter-node-worker', Util);
+                lzPackage('worker-node', Util);
             }
 
             return 0;

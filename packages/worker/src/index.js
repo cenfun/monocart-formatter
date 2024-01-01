@@ -1,11 +1,11 @@
-const format = require('./format.js');
+const formatSync = require('../../formatter/src/format-sync.js');
 
 onmessage = function(e) {
     const {
         text, type, options
     } = e.data;
 
-    const result = format(text, type, options);
+    const result = formatSync(text, type, options);
 
     postMessage(result);
 

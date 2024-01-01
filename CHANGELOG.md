@@ -1,3 +1,6 @@
+* 2.2.1
+    - added worker bundle for nodejs
+
 * 2.2.0
     - added mapping parser class
     - added locator class

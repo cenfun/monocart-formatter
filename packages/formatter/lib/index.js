@@ -1,13 +1,13 @@
 const { Worker } = require('worker_threads');
-const dataStr = require('../../../.temp/worker-node.js');
+const dataStr = require('../dist/monocart-formatter-worker-node.lz.js');
 const inflateSync = require('lz-utils/inflate-sync');
 
-const generateMapping = require('../../formatter/src/generate-mapping.js');
+const generateMapping = require('./generate-mapping.js');
 
-const Locator = require('../../formatter/src/locator.js');
-const MappingParser = require('../../formatter/src/mapping-parser.js');
-const LineParser = require('../../formatter/src/line-parser.js');
-const CommentParser = require('../../formatter/src/comment-parser.js');
+const Locator = require('./locator.js');
+const MappingParser = require('./mapping-parser.js');
+const LineParser = require('./line-parser.js');
+const CommentParser = require('./comment-parser.js');
 
 const formatterDataUrl = () => {
     const jsStr = inflateSync(dataStr);
@@ -57,9 +57,6 @@ const format = (text, type, options) => {
 };
 
 module.exports = {
-    VERSION: window.VERSION,
-    TIMESTAMP: window.TIMESTAMP,
-
     format,
     generateMapping,
 

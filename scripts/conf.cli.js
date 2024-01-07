@@ -6,7 +6,8 @@ const path = require('path');
 
 const lzPackage = (name, Util) => {
     Util.logCyan(`generating ${name}.js ...`);
-    const workerPath = path.resolve(__dirname, `../packages/${name}/dist/monocart-formatter-${name}.js`);
+    const workerDistDir = path.resolve(__dirname, `../packages/${name}/dist/`);
+    const workerPath = path.resolve(workerDistDir, `monocart-formatter-${name}.js`);
     if (!fs.existsSync(workerPath)) {
         Util.logRed(`please build ${name} first, not found build ${workerPath}`);
         return 0;
@@ -14,7 +15,7 @@ const lzPackage = (name, Util) => {
     const buf = fs.readFileSync(workerPath);
     const { deflateSync } = require('lz-utils');
     const workerData = `module.exports = '${deflateSync(buf)}';`;
-    Util.writeFileSync(path.resolve(`.temp/${name}.js`), workerData);
+    Util.writeFileSync(path.resolve(workerDistDir, `monocart-formatter-${name}.lz.js`), workerData);
 };
 
 module.exports = {
@@ -30,12 +31,6 @@ module.exports = {
                 item.devtool = false;
             }
 
-            if (item.name === 'formatter') {
-                lzPackage('worker', Util);
-            } else if (item.name === 'formatter-node') {
-                lzPackage('worker-node', Util);
-            }
-
             return 0;
         },
 
@@ -44,20 +39,23 @@ module.exports = {
 
             if (item.name === 'formatter') {
 
-                Util.logCyan('copy monocart-formatter-node.js');
-                fs.cpSync(
-                    path.resolve(__dirname, '../packages/formatter-node/dist/monocart-formatter-node.js'),
-                    path.resolve(__dirname, '../packages/formatter/dist/monocart-formatter-node.js')
-                );
-
                 Util.logCyan('copy README.md');
                 fs.cpSync(
                     path.resolve(__dirname, '../README.md'),
                     path.resolve(__dirname, '../packages/formatter/README.md')
                 );
 
-            }
+                Util.logCyan('copy monocart-formatter-worker-node.lz.js');
+                fs.cpSync(
+                    path.resolve(__dirname, '../packages/worker-node/dist/monocart-formatter-worker-node.lz.js'),
+                    path.resolve(__dirname, '../packages/formatter/dist/monocart-formatter-worker-node.lz.js')
+                );
 
+            } else if (item.name === 'worker') {
+                lzPackage('worker', Util);
+            } else if (item.name === 'worker-node') {
+                lzPackage('worker-node', Util);
+            }
 
             return 0;
         }

@@ -9,7 +9,7 @@
         "test": "node ./test/test.js",
         "build-test": "node ./scripts/build-test.js",
         "build-worker": "sf b worker,worker-node -p patch",
-        "build-formatter": "sf b formatter,formatter-node -p patch",
+        "build-formatter": "sf b formatter -p patch",
         "build": "sf lint && npm run build-test && npm run build-worker && npm run build-formatter",
         "patch": "npm run build && sf publish patch"
     },

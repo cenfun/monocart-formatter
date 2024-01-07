@@ -1,12 +1,12 @@
-const dataStr = require('../../../.temp/worker.js');
+const dataStr = require('../../worker/dist/monocart-formatter-worker.lz.js');
 const inflateSync = require('lz-utils/inflate-sync');
 
-const generateMapping = require('./generate-mapping.js');
+const generateMapping = require('../lib/generate-mapping.js');
 
-const Locator = require('./locator.js');
-const MappingParser = require('./mapping-parser.js');
-const LineParser = require('./line-parser.js');
-const CommentParser = require('./comment-parser.js');
+const Locator = require('../lib/locator.js');
+const MappingParser = require('../lib/mapping-parser.js');
+const LineParser = require('../lib/line-parser.js');
+const CommentParser = require('../lib/comment-parser.js');
 
 const formatterDataUrl = () => {
     const jsStr = inflateSync(dataStr);

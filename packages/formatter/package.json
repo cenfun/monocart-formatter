@@ -4,12 +4,24 @@
     "description": "JS/CSS/HTML/JSON formatter with mapping for both browser (Web Worker) and Node.js (Worker Threads)",
     "main": "dist/monocart-formatter.js",
     "exports": {
-        ".": "./dist/monocart-formatter.js",
-        "./node": "./dist/monocart-formatter-node.js",
+        ".": {
+            "types": "./lib/index.d.ts",
+            "import": "./dist/monocart-formatter.js",
+            "require": "./dist/monocart-formatter.js",
+            "default": "./dist/monocart-formatter.js"
+        },
+        "./node": {
+            "types": "./lib/index.d.ts",
+            "import": "./lib/index.mjs",
+            "require": "./lib/index.js",
+            "default": "./lib/index.js"
+        },
         "./package.json": "./package.json"
     },
+    "types": "./lib/index.d.ts",
     "files": [
-        "dist"
+        "dist",
+        "lib"
     ],
     "license": "MIT",
     "repository": {

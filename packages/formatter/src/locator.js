@@ -4,6 +4,7 @@ class Locator {
         this.source = source;
         this.lineParser = new LineParser(source);
         this.lines = this.lineParser.lines;
+        this.comments = this.lineParser.comments;
     }
 
     // 1-base

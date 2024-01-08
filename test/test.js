@@ -1,10 +1,16 @@
 const fs = require('fs');
 const path = require('path');
+const http = require('http');
+
 const CG = require('console-grid');
 const EC = require('eight-colors');
 const {
     format, LineParser, MappingParser
 } = require('monocart-formatter');
+
+const { chromium } = require('playwright');
+const Koa = require('koa');
+const KSR = require('koa-static-resolver');
 
 const testCases = require('./test-cases.json');
 
@@ -60,7 +66,74 @@ const checkMapping = (originalContent, formattedContent, mappingData) => {
 
 };
 
-const main = async () => {
+const startServer = () => {
+    const serverPort = 8130;
+    const serverUrl = `http://localhost:${serverPort}`;
+
+    const app = new Koa();
+    app.use(KSR({
+        dirs: [
+            'packages/formatter/public',
+            'packages/formatter',
+            './'
+        ],
+        headers: {
+            'Access-Control-Allow-Origin': '*'
+        },
+        gzip: false,
+        // max-age=<seconds>
+        maxAge: 1
+    }));
+
+    const server = http.createServer(app.callback());
+
+    return new Promise((resolve) => {
+
+        server.listen(serverPort, function() {
+            EC.logCyan(`${new Date().toLocaleString()} server listening on ${serverUrl}`);
+            resolve({
+                server,
+                serverUrl
+            });
+        });
+
+    });
+};
+
+const testBrowser = async () => {
+
+    const {
+        server,
+        serverUrl
+    } = await startServer();
+
+    console.log('test in browser ...');
+
+    const browser = await chromium.launch({
+        // headless: false
+    });
+
+    const page = await browser.newPage();
+
+    page.on('console', (msg) => {
+        if (msg.type() === 'error') {
+            EC.logRed(msg.text());
+        }
+    });
+
+    await page.goto(serverUrl);
+
+    await new Promise((resolve) => {
+        setTimeout(resolve, 1000);
+    });
+
+    await browser.close();
+
+    server.close();
+
+};
+
+const test = async () => {
 
     testCases.forEach((item) => {
         // const source = item.formattedContent;
@@ -171,7 +244,8 @@ const main = async () => {
 
     });
 
+    await testBrowser();
 
 };
 
-main();
+test();

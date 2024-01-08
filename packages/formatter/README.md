@@ -42,7 +42,11 @@ export function format(
     text: string,
     type?: string,
     options?: any
-): Promise<{ content: string, mapping: FormatterMapping, error?: Error }>
+): Promise<{
+    content: string,
+    mapping: FormatterMapping,
+    error?: Error
+}>
 
 
 export type CommentItem = {
@@ -81,6 +85,7 @@ export class LineParser {
     comments: CommentItem[];
     findLine(pos: number): LineItem;
 }
+
 
 export type LocationItem = LineItem & {
     // 1-base

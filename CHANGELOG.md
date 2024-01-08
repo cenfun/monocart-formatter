@@ -1,3 +1,7 @@
+* 2.3.0
+    - added types
+    - changed native node exports
+
 * 2.2.1
     - added worker bundle for nodejs
 

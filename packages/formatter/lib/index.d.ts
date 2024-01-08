@@ -8,11 +8,12 @@ export function generateMapping(
     formattedText: string
 ): FormatterMapping
 
+
 /**
  * @text source content
  * @type js/css/html/json
  * @options https://github.com/beautify-web/js-beautify
- *  */
+*/
 export function format(
     text: string,
     type?: string,

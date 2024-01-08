@@ -1,4 +1,4 @@
-const formatSync = require('../../formatter/lib/format-sync.js');
+const formatSync = require('../../formatter/node/format-sync.js');
 
 onmessage = function(e) {
     const {

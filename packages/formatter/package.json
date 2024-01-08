@@ -5,23 +5,19 @@
     "main": "dist/monocart-formatter.js",
     "exports": {
         ".": {
-            "types": "./lib/index.d.ts",
-            "import": "./dist/monocart-formatter.js",
-            "require": "./dist/monocart-formatter.js",
+            "types": "./node/index.d.ts",
             "default": "./dist/monocart-formatter.js"
         },
         "./node": {
-            "types": "./lib/index.d.ts",
-            "import": "./lib/index.mjs",
-            "require": "./lib/index.js",
-            "default": "./lib/index.js"
+            "import": "./node/index.mjs",
+            "require": "./node/index.js"
         },
         "./package.json": "./package.json"
     },
-    "types": "./lib/index.d.ts",
+    "types": "./node/index.d.ts",
     "files": [
         "dist",
-        "lib"
+        "node"
     ],
     "license": "MIT",
     "repository": {

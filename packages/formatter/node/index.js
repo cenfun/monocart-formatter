@@ -57,12 +57,13 @@ const format = (text, type, options) => {
 };
 
 module.exports = {
-    format,
     generateMapping,
+    format,
 
-    Locator,
-    MappingParser,
+    CommentParser,
     LineParser,
-    CommentParser
+    Locator,
+
+    MappingParser
 };
 

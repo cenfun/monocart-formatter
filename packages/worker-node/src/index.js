@@ -1,6 +1,6 @@
 import { parentPort } from 'worker_threads';
 
-import formatSync from '../../formatter/lib/format-sync.js';
+import formatSync from '../../formatter/node/format-sync.js';
 
 parentPort.on('message', (message) => {
     const {

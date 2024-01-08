@@ -4,7 +4,7 @@ const CG = require('console-grid');
 const EC = require('eight-colors');
 const {
     format, LineParser, MappingParser
-} = require('monocart-formatter/node');
+} = require('monocart-formatter');
 
 const testCases = require('./test-cases.json');
 
@@ -127,7 +127,7 @@ const main = async () => {
         commentsCount: 2,
         commentLinesCount: 5
     }, {
-        path: path.resolve('packages/formatter/node/generate-mapping.js'),
+        path: path.resolve('packages/formatter/lib/generate-mapping.js'),
         commentsCount: 9,
         commentLinesCount: 9
     }, {

@@ -2,8 +2,8 @@
     "name": "monocart-formatter-worker-node",
     "version": "2.3.0",
     "private": true,
-    "main": "dist/monocart-formatter-worker-node.js",
     "type": "module",
+    "main": "dist/monocart-formatter-worker-node.js",
     "files": [
         "dist"
     ],

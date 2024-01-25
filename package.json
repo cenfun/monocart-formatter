@@ -21,16 +21,16 @@
     ],
     "license": "MIT",
     "devDependencies": {
-        "console-grid": "^2.0.1",
-        "eight-colors": "^1.0.3",
+        "console-grid": "^2.1.0",
+        "eight-colors": "^1.2.1",
         "eslint": "^8.56.0",
         "eslint-config-plus": "^1.0.6",
         "eslint-plugin-html": "^7.1.0",
         "js-beautify": "^1.14.11",
         "koa": "^2.15.0",
-        "koa-static-resolver": "^1.0.4",
-        "lz-utils": "^2.0.1",
-        "playwright": "^1.40.1",
+        "koa-static-resolver": "^1.0.5",
+        "lz-utils": "^2.0.2",
+        "playwright": "^1.41.1",
         "stylelint": "^15.11.0",
         "stylelint-config-plus": "^1.0.4"
     }

@@ -1,3 +1,6 @@
+* 2.3.1
+    - fixed the end column is out of source length
+
 * 2.3.0
     - added types
     - changed native node exports

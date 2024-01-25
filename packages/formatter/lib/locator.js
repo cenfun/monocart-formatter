@@ -16,7 +16,7 @@ class Locator {
             if (column === Infinity) {
                 return lineInfo.start + lineInfo.length;
             }
-            return lineInfo.start + column;
+            return lineInfo.start + Math.min(column, lineInfo.length);
         }
         return 0;
     }

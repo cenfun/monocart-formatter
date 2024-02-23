@@ -10,6 +10,7 @@ class LineParser {
         }
 
         const commentParser = new CommentParser(content);
+        this.commentParser = commentParser;
         this.comments = commentParser.comments;
 
         // only \n, common on Linux and macOS

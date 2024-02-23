@@ -1,3 +1,6 @@
+* 2.3.2
+    - export commentParser for lineParser
+
 * 2.3.1
     - fixed the end column is out of source length
 

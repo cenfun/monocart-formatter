@@ -1,3 +1,6 @@
+* 2.3.3
+    - fixed node import issue
+
 * 2.3.2
     - export commentParser for lineParser
 

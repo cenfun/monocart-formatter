@@ -1,6 +1,6 @@
 {
     "name": "monocart-formatter",
-    "version": "2.3.2",
+    "version": "2.3.3",
     "description": "JS/CSS/HTML/JSON formatter with mapping for both browser (Web Worker) and Node.js (Worker Threads)",
     "main": "dist/monocart-formatter.js",
     "exports": {

@@ -1,5 +1,5 @@
 * 3.0.0
-    - (Breaking) removed locator (only keep formatter)
+    - (Breaking) removed locator, see separated [monocart-locator](https://github.com/cenfun/monocart-locator)
     - (Breaking) exported browser version by default
 
 * 2.3.3

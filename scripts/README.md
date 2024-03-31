@@ -1,6 +1,18 @@
 # Monocart Formatter
 
-> JS/CSS/HTML/JSON formatter with mapping for both browser (Web Worker) and Node.js (Worker Threads).
+> JS/CSS/HTML/JSON formatter
+
+## Features
+- Base on [js-beautify](https://github.com/beautifier/js-beautify)
+- Generating mapping after formatted
+- Working with web worker in browser
+- Working with worker threads in Node.js
+- Minifying worker code with gzip
+
+## Install
+```sh
+npm i monocart-formatter
+```
 
 ## Usage
 ```js
@@ -8,7 +20,8 @@ import { format, MappingParser } from 'monocart-formatter';
 
 const text = "var a = 1;";
 const type = "js";
-const options = {}; // js-beautify options https://github.com/beautify-web/js-beautify
+// js-beautify options https://github.com/beautify-web/js-beautify
+const options = {}; 
 const { content, mapping } = await format(text, type, options);
 
 console.log("formatted content", content);

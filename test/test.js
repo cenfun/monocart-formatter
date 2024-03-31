@@ -1,5 +1,5 @@
 const http = require('http');
-
+const assert = require('assert');
 const EC = require('eight-colors');
 const { format, MappingParser } = require('../lib');
 
@@ -26,9 +26,9 @@ const checkOriginalToFormatted = (originalContent, formattedContent, mappingPars
             continue;
         }
         const s2 = formattedContent[formattedPosition];
-        if (s1 !== s2) {
-            console.error([i, formattedPosition], [s1, s2]);
-        }
+
+        // console.log([i, formattedPosition], [s1, s2]);
+        assert.equal(s1, s2);
     }
 };
 
@@ -45,9 +45,9 @@ const checkFormattedToOriginal = (originalContent, formattedContent, mappingPars
             continue;
         }
         const s2 = originalContent[originalPosition];
-        if (s1 !== s2) {
-            console.error([i, originalPosition], [s1, s2], originalContent, formattedContent);
-        }
+
+        // console.error([i, originalPosition], [s1, s2], originalContent, formattedContent);
+        assert.equal(s1, s2);
     }
 };
 
@@ -60,6 +60,24 @@ const checkMapping = (originalContent, formattedContent, mappingData) => {
     checkFormattedToOriginal(originalContent, formattedContent, mappingParser);
 
 };
+
+it('test in node ', async () => {
+
+    for (const item of testCases) {
+
+        console.log('check file', EC.cyan(item.name));
+        const { content, mapping } = await format(item.content, item.type);
+
+        // all \r will be removed after formatted
+        const formattedContent = item.formattedContent.replace(/\r/g, '');
+
+        assert.equal(content, formattedContent, `formatted content not matched: ${item.name}`);
+
+        checkMapping(item.content, content, mapping);
+
+    }
+
+});
 
 const startServer = () => {
     const serverPort = 8130;
@@ -94,7 +112,7 @@ const startServer = () => {
     });
 };
 
-const testBrowser = async () => {
+it('test in browser', async () => {
 
     const {
         server,
@@ -107,10 +125,11 @@ const testBrowser = async () => {
 
     const page = await browser.newPage();
 
+    const errors = [];
     console.log('only show errors');
     page.on('console', (msg) => {
         if (msg.type() === 'error') {
-            EC.logRed(msg.text());
+            errors.push(msg.text());
         }
     });
 
@@ -124,32 +143,7 @@ const testBrowser = async () => {
 
     server.close();
 
-};
+    EC.logRed(errors);
+    assert.equal(errors.length, 1);
 
-const test = async () => {
-
-    console.log('==============================================================================');
-    EC.logMagenta('test in node ...');
-    for (const item of testCases) {
-
-        console.log('check file', EC.cyan(item.name));
-        const { content, mapping } = await format(item.content, item.type);
-
-        // all \r will be removed after formatted
-        const formattedContent = item.formattedContent.replace(/\r/g, '');
-        if (content !== formattedContent) {
-            EC.logRed('formatted content not matched', item.name);
-        }
-
-        checkMapping(item.content, content, mapping);
-
-    }
-
-    console.log('==============================================================================');
-    EC.logMagenta('test in browser ...');
-
-    await testBrowser();
-
-};
-
-test();
+});

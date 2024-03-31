@@ -22,14 +22,13 @@ const buildReadme = (Util) => {
     Util.logCyan('build README.md');
     const template = fs.readFileSync(path.resolve(__dirname, './README.md')).toString('utf-8');
 
-    const types = fs.readFileSync(path.resolve(__dirname, '../packages/formatter/lib/index.d.ts')).toString('utf-8');
+    const types = fs.readFileSync(path.resolve(__dirname, '../lib/index.d.ts')).toString('utf-8');
 
     const readme = Util.replace(template, {
         replace_holder_types: types
     });
 
     fs.writeFileSync(path.resolve(__dirname, '../README.md'), readme);
-    fs.writeFileSync(path.resolve(__dirname, '../packages/formatter/README.md'), readme);
 
 };
 
@@ -54,28 +53,32 @@ module.exports = {
 
             if (item.name === 'formatter') {
 
-                buildReadme(Util);
-
-                Util.logCyan('copy monocart-formatter-worker-node.lz.js');
+                Util.logCyan('copy monocart-formatter.js');
                 fs.cpSync(
-                    path.resolve(__dirname, '../packages/worker-node/dist/monocart-formatter-worker-node.lz.js'),
-                    path.resolve(__dirname, '../packages/formatter/dist/monocart-formatter-worker-node.lz.js')
+                    path.resolve(__dirname, '../packages/formatter/dist/monocart-formatter.js'),
+                    path.resolve(__dirname, '../dist/monocart-formatter.js')
                 );
 
             } else if (item.name === 'worker') {
                 lzPackage('worker', Util);
             } else if (item.name === 'worker-node') {
                 lzPackage('worker-node', Util);
+
+                Util.logCyan('copy monocart-formatter-worker-node.lz.js');
+                fs.cpSync(
+                    path.resolve(__dirname, '../packages/worker-node/dist/monocart-formatter-worker-node.lz.js'),
+                    path.resolve(__dirname, '../dist/monocart-formatter-worker-node.lz.js')
+                );
+
             }
 
             return 0;
+        },
+
+        afterAll: (option, Util) => {
+            buildReadme(Util);
+            return 0;
         }
-
-
-        // afterAll: (option, Util) => {
-        //     console.log('after build all');
-        //     return 0;
-        // }
     }
 
 };

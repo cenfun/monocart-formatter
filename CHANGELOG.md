@@ -1,3 +1,6 @@
+* 3.0.0
+    - removed locator (only kept formatter)
+
 * 2.3.3
     - fixed node import issue
 

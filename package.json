@@ -24,7 +24,7 @@
         "build-worker": "sf b worker -p patch",
         "build-formatter": "sf b formatter -p patch",
         "build": "sf lint && npm run build-test && npm run build-worker && npm run build-formatter",
-        "patch": "npm run build && npm run test && sf publish patch"
+        "patch": "npm run build && npm run test && sf publish patch -r"
     },
     "workspaces": [
         "packages/*"

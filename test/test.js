@@ -14,7 +14,7 @@ const testCases = require('./test-cases.json');
 const emptyReg = /\s/;
 
 const checkOriginalToFormatted = (originalContent, formattedContent, mappingParser) => {
-    console.log('============= checkOriginalToFormatted');
+    console.log('- checkOriginalToFormatted');
     for (let i = 0, l = originalContent.length; i < l; i++) {
         const s1 = originalContent[i];
         if (emptyReg.test(s1)) {
@@ -33,7 +33,7 @@ const checkOriginalToFormatted = (originalContent, formattedContent, mappingPars
 };
 
 const checkFormattedToOriginal = (originalContent, formattedContent, mappingParser) => {
-    console.log('============= checkFormattedToOriginal');
+    console.log('- checkFormattedToOriginal');
     for (let i = 0, l = formattedContent.length; i < l; i++) {
         const s1 = formattedContent[i];
         if (emptyReg.test(s1)) {
@@ -84,7 +84,7 @@ const startServer = () => {
     return new Promise((resolve) => {
 
         server.listen(serverPort, function() {
-            EC.logCyan(`${new Date().toLocaleString()} server listening on ${serverUrl}`);
+            console.log(`${new Date().toLocaleString()} server listening on ${serverUrl}`);
             resolve({
                 server,
                 serverUrl
@@ -101,14 +101,13 @@ const testBrowser = async () => {
         serverUrl
     } = await startServer();
 
-    console.log('test in browser ...');
-
     const browser = await chromium.launch({
         // headless: false
     });
 
     const page = await browser.newPage();
 
+    console.log('only show errors');
     page.on('console', (msg) => {
         if (msg.type() === 'error') {
             EC.logRed(msg.text());
@@ -129,8 +128,11 @@ const testBrowser = async () => {
 
 const test = async () => {
 
+    console.log('==============================================================================');
+    EC.logMagenta('test in node ...');
     for (const item of testCases) {
-        console.log('===========================================', item.name);
+
+        console.log('check file', EC.cyan(item.name));
         const { content, mapping } = await format(item.content, item.type);
 
         // all \r will be removed after formatted
@@ -142,6 +144,9 @@ const test = async () => {
         checkMapping(item.content, content, mapping);
 
     }
+
+    console.log('==============================================================================');
+    EC.logMagenta('test in browser ...');
 
     await testBrowser();
 

@@ -18,20 +18,6 @@ const lzPackage = (name, Util) => {
     Util.writeFileSync(path.resolve(workerDistDir, `monocart-formatter-${name}.lz.js`), workerData);
 };
 
-const buildReadme = (Util) => {
-    Util.logCyan('build README.md');
-    const template = fs.readFileSync(path.resolve(__dirname, './README.md')).toString('utf-8');
-
-    const types = fs.readFileSync(path.resolve(__dirname, '../lib/index.d.ts')).toString('utf-8');
-
-    const readme = Util.replace(template, {
-        replace_holder_types: types
-    });
-
-    fs.writeFileSync(path.resolve(__dirname, '../README.md'), readme);
-
-};
-
 module.exports = {
 
     build: {
@@ -83,7 +69,6 @@ module.exports = {
         },
 
         afterAll: (option, Util) => {
-            buildReadme(Util);
             return 0;
         }
     }

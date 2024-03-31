@@ -1,6 +1,6 @@
 {
     "name": "monocart-formatter-worker-browser",
-    "version": "2.3.3",
+    "version": "3.0.0",
     "private": true,
     "main": "dist/monocart-formatter-worker-browser.js",
     "files": [

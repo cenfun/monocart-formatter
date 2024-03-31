@@ -1,6 +1,6 @@
 {
     "name": "monocart-formatter",
-    "version": "2.3.3",
+    "version": "3.0.0",
     "description": "JS/CSS/HTML/JSON formatter with content mapping",
     "main": "./dist/monocart-formatter.js",
     "exports": {

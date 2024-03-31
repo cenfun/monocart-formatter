@@ -2,7 +2,7 @@
     "name": "monocart-formatter",
     "version": "2.3.3",
     "description": "JS/CSS/HTML/JSON formatter with mapping for both browser (Web Worker) and Node.js (Worker Threads)",
-    "main": "dist/monocart-formatter.js",
+    "main": "./lib/index.js",
     "exports": {
         ".": {
             "types": "./lib/index.d.ts",
@@ -10,13 +10,13 @@
             "require": "./lib/index.js",
             "default": "./lib/index.js"
         },
+        "./browser": {
+            "types": "./lib/index.d.ts",
+            "default": "./dist/monocart-formatter.js"
+        },
         "./package.json": "./package.json"
     },
     "types": "./lib/index.d.ts",
-    "files": [
-        "dist",
-        "lib"
-    ],
     "scripts": {
         "dev": "sf d formatter",
         "test": "node ./test/test.js",
@@ -28,6 +28,10 @@
     },
     "workspaces": [
         "packages/*"
+    ],
+    "files": [
+        "dist",
+        "lib"
     ],
     "keywords": [
         "monocart-formatter"

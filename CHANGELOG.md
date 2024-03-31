@@ -1,5 +1,6 @@
 * 3.0.0
     - removed locator (only kept formatter)
+    - exported browser version standalone, defaults to node version
 
 * 2.3.3
     - fixed node import issue

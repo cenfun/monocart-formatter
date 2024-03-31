@@ -6,7 +6,7 @@ const main = () => {
 
     EC.logCyan('build test cases ... ');
 
-    const dir = path.resolve(__dirname, '../test/cases');
+    const dir = path.resolve(__dirname, '../packages/formatter/test/cases');
     const files = fs.readdirSync(dir);
 
     const key = '.formatted';
@@ -39,7 +39,7 @@ const main = () => {
 
     const content = JSON.stringify(list, null, 4);
 
-    const filepath = path.resolve(dir, '../test-cases.json');
+    const filepath = path.resolve(dir, '../data/test-cases.json');
     fs.writeFileSync(filepath, content);
 
     console.log(list.map((it) => it.name));

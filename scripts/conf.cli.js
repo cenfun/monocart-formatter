@@ -20,6 +20,10 @@ const lzPackage = (name, Util) => {
 
 module.exports = {
 
+    test: {
+        coverageProvider: 'v8'
+    },
+
     build: {
 
         vendors: ['formatter', 'worker'],

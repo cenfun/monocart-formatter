@@ -1,10 +1,6 @@
-node_modules/*
-node_modules
-.DS_Store
-/.upgrade.json
-/package-lock.json
+
+/node_modules
 /.temp
-/packages/*/dist
+/package-lock.json
 /dist
-*.map
-/test/test-cases.json
+/packages/*/dist/

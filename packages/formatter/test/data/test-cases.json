@@ -1,0 +1,37 @@
+[
+    {
+        "type": "js",
+        "name": "complex.txt",
+        "content": "/* eslint-disable no-trailing-spaces,line-comment-position,no-inline-comments,indent,no-multi-spaces,no-multiple-empty-lines */\r\n        // LineComment\r\n\r\nconsole.log('some//thing'); // comment /*\r\n\r\n  // comment /*\r\nconsole.log('some//thing/*'); /*\r\n    ddd\r\n*/\r\n                           console.log('some/*/thing');\r\n\r\n     console.log(`\r\n        /*\r\n            //\r\n        */\r\n     `);\r\n\r\n/**\r\n    * BlockComment\r\n *\r\n       \r\n        */ console.log('some/*/thing');\r\n\r\nconsole.log('some//thing'); // end of line\r\n                                        \r\n/*\r\n    connected\r\n*/     console.log('some*//thing'); /*\r\n cross line\r\n */\r\n\r\nconsole.log('some*//thing'); /*\r\n cross line\r\n */\r\n\r\n    console.log('some*//thing'); /* inline */ console.log('some*//thing');\r\n\r\n/*\r\n multiple line\r\n//\r\n */\r\n\r\n    /**/ console.log('some*//thing'); /*\r\n        console.log('some//*thing')\r\n */\r\n\r\n\r\n",
+        "formattedName": "complex.formatted.txt",
+        "formattedContent": "/* eslint-disable no-trailing-spaces,line-comment-position,no-inline-comments,indent,no-multi-spaces,no-multiple-empty-lines */\r\n// LineComment\r\n\r\nconsole.log('some//thing'); // comment /*\r\n\r\n// comment /*\r\nconsole.log('some//thing/*');\r\n/*\r\n    ddd\r\n*/\r\nconsole.log('some/*/thing');\r\n\r\nconsole.log(`\r\n        /*\r\n            //\r\n        */\r\n     `);\r\n\r\n/**\r\n    * BlockComment\r\n *\r\n       \r\n        */\r\nconsole.log('some/*/thing');\r\n\r\nconsole.log('some//thing'); // end of line\r\n\r\n/*\r\n    connected\r\n*/\r\nconsole.log('some*//thing');\r\n/*\r\ncross line\r\n*/\r\n\r\nconsole.log('some*//thing');\r\n/*\r\ncross line\r\n*/\r\n\r\nconsole.log('some*//thing'); /* inline */\r\nconsole.log('some*//thing');\r\n\r\n/*\r\n multiple line\r\n//\r\n */\r\n\r\n/**/\r\nconsole.log('some*//thing');\r\n/*\r\n       console.log('some//*thing')\r\n*/"
+    },
+    {
+        "type": "css",
+        "name": "css.txt",
+        "content": ".red {\r\n    color: red;\r\n}\r\n\r\n.unused,.and-used {\r\n    position: relative;\r\n}\r\n\r\n/* comments */\r\n.inline-unused{font-size:medium;}.inline-used {position:relative;}.next-unused{color:none}\r\n            ",
+        "formattedName": "css.formatted.txt",
+        "formattedContent": ".red {\r\n    color: red;\r\n}\r\n\r\n.unused,\r\n.and-used {\r\n    position: relative;\r\n}\r\n\r\n/* comments */\r\n.inline-unused {\r\n    font-size: medium;\r\n}\r\n\r\n.inline-used {\r\n    position: relative;\r\n}\r\n\r\n.next-unused {\r\n    color: none\r\n}"
+    },
+    {
+        "type": "html",
+        "name": "html.txt",
+        "content": "\r\n        <!DOCTYPE html>\r\n            <html>\r\n                <head>\r\n                    <meta charset=\"utf-8\">\r\n                    <title>title</title>\r\n                    <style>\r\n                        table { width: 100%;}\r\n                        table td { text-align: center; }\r\n                    </style>\r\n                </head>\r\n                <body>\r\n                    <div><div>\r\n                    <span>\r\n                </body>\r\n            </html>\r\n        ",
+        "formattedName": "html.formatted.txt",
+        "formattedContent": "<!DOCTYPE html>\r\n<html>\r\n\r\n<head>\r\n    <meta charset=\"utf-8\">\r\n    <title>title</title>\r\n    <style>\r\n        table {\r\n            width: 100%;\r\n        }\r\n\r\n        table td {\r\n            text-align: center;\r\n        }\r\n    </style>\r\n</head>\r\n\r\n<body>\r\n    <div>\r\n        <div>\r\n            <span>\r\n</body>\r\n\r\n</html>"
+    },
+    {
+        "type": "js",
+        "name": "js.txt",
+        "content": "console.log(1);var   a= true;if(a){console.log(a)}\r\n        \r\nvar b = 2;  \r\n    \r\nconst foo = ()   => {\r\n\r\n};\r\n\r\nconst bar = ()=> {\r\n\r\n};\r\n                ",
+        "formattedName": "js.formatted.txt",
+        "formattedContent": "console.log(1);\r\nvar a = true;\r\nif (a) {\r\n    console.log(a)\r\n}\r\n\r\nvar b = 2;\r\n\r\nconst foo = () => {\r\n\r\n};\r\n\r\nconst bar = () => {\r\n\r\n};"
+    },
+    {
+        "type": "json",
+        "name": "json.txt",
+        "content": "{\"a\":\"1\",\r\n\"build-worker\": \"sf b worker -p\",\"build-formatter\": \"sf b formatter -p\",\r\n \"build\": \"sf lint && npm run build-worker && npm run build-formatter\",\r\n\"patch\": \"npm run build && sf publish patch\"\r\n}\r\n",
+        "formattedName": "json.formatted.txt",
+        "formattedContent": "{\r\n    \"a\": \"1\",\r\n    \"build-worker\": \"sf b worker -p\",\r\n    \"build-formatter\": \"sf b formatter -p\",\r\n    \"build\": \"sf lint && npm run build-worker && npm run build-formatter\",\r\n    \"patch\": \"npm run build && sf publish patch\"\r\n}"
+    }
+]

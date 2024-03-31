@@ -19,7 +19,7 @@
     "types": "./lib/index.d.ts",
     "scripts": {
         "dev": "sf d formatter",
-        "test": "mocha",
+        "test": "sf t && mocha",
         "build-test": "node ./scripts/build-test.js",
         "build-worker": "sf b worker -p patch",
         "build-formatter": "sf b formatter -p patch",
@@ -48,11 +48,8 @@
         "eslint-config-plus": "^1.0.6",
         "eslint-plugin-html": "^8.0.0",
         "js-beautify": "^1.15.1",
-        "koa": "^2.15.2",
-        "koa-static-resolver": "^1.0.6",
         "lz-utils": "^2.0.2",
         "mocha": "^10.4.0",
-        "playwright": "^1.42.1",
         "stylelint": "^16.3.1",
         "stylelint-config-plus": "^1.1.0"
     }

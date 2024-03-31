@@ -1,1 +1,0 @@
-# monocart-formatter-worker

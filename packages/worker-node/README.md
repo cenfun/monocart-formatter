@@ -1,1 +1,3 @@
-# monocart-formatter-node-worker
+# monocart-formatter-worker-node
+
+formatter worker for node

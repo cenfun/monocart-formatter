@@ -1,4 +1,4 @@
-const dataStr = require('../../worker/dist/monocart-formatter-worker.lz.js');
+const dataStr = require('../../worker-browser/dist/monocart-formatter-worker-browser.lz.js');
 const inflateSync = require('lz-utils/inflate-sync');
 
 const generateMapping = require('../../../lib/generate-mapping.js');

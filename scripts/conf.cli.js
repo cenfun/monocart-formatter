@@ -36,7 +36,7 @@ module.exports = {
 
     build: {
 
-        vendors: ['formatter'],
+        vendors: ['formatter', 'worker'],
 
         before: (item, Util) => {
             console.log('before build');
@@ -53,21 +53,28 @@ module.exports = {
 
             if (item.name === 'formatter') {
 
-                Util.logCyan('copy monocart-formatter.js');
+                const filename = 'monocart-formatter.js';
+
+                Util.logCyan(`copy ${filename} ...`);
                 fs.cpSync(
-                    path.resolve(__dirname, '../packages/formatter/dist/monocart-formatter.js'),
-                    path.resolve(__dirname, '../dist/monocart-formatter.js')
+                    path.resolve(__dirname, `../packages/${item.name}/dist/${filename}`),
+                    path.resolve(__dirname, `../dist/${filename}`)
                 );
 
-            } else if (item.name === 'worker') {
-                lzPackage('worker', Util);
-            } else if (item.name === 'worker-node') {
-                lzPackage('worker-node', Util);
+            } else if (item.name === 'worker-browser') {
 
-                Util.logCyan('copy monocart-formatter-worker-node.lz.js');
+                lzPackage(item.name, Util);
+
+            } else if (item.name === 'worker-node') {
+
+                lzPackage(item.name, Util);
+
+                const filename = `monocart-formatter-${item.name}.lz.js`;
+
+                Util.logCyan(`copy ${filename} ...`);
                 fs.cpSync(
-                    path.resolve(__dirname, '../packages/worker-node/dist/monocart-formatter-worker-node.lz.js'),
-                    path.resolve(__dirname, '../dist/monocart-formatter-worker-node.lz.js')
+                    path.resolve(__dirname, `../packages/${item.name}/dist/${filename}`),
+                    path.resolve(__dirname, `../dist/${filename}`)
                 );
 
             }
